@@ -30,7 +30,7 @@ const manifest = {
   version: packageJson.version,
   description: '__MSG_extensionDescription__',
   host_permissions: ['<all_urls>'],
-  permissions: ['storage', 'scripting', 'tabs', 'notifications', 'sidePanel'],
+  permissions: ['activeTab', 'scripting', 'storage'],
   options_page: 'options/index.html',
   background: {
     service_worker: 'background.js',
@@ -39,9 +39,6 @@ const manifest = {
   action: {
     default_popup: 'popup/index.html',
     default_icon: 'icon-34.jpg',
-  },
-  chrome_url_overrides: {
-    newtab: 'new-tab/index.html',
   },
   icons: {
     128: 'icon-128.jpg',
@@ -63,7 +60,7 @@ const manifest = {
   devtools_page: 'devtools/index.html',
   web_accessible_resources: [
     {
-      resources: ['*.js', '*.css', '*.svg', 'icon-128.png', 'icon-34.png'],
+      resources: ['*.js', '*.css', '*.svg', 'icon-128.jpg', 'icon-34.jpg'],
       matches: ['*://*/*'],
     },
   ],
