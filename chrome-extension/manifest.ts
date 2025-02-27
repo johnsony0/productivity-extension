@@ -38,10 +38,10 @@ const manifest = {
   },
   action: {
     default_popup: 'popup/index.html',
-    default_icon: 'icon-34.jpg',
+    default_icon: 'icon-34.png',
   },
   icons: {
-    128: 'icon-128.jpg',
+    128: 'icon-128.png',
   },
   content_scripts: [
     {
@@ -60,13 +60,10 @@ const manifest = {
   devtools_page: 'devtools/index.html',
   web_accessible_resources: [
     {
-      resources: ['*.js', '*.css', '*.svg', 'icon-128.jpg', 'icon-34.jpg'],
+      resources: ['*.js', '*.css', '*.svg', 'icon-128.png', 'icon-34.png'],
       matches: ['*://*/*'],
     },
   ],
-  side_panel: {
-    default_path: 'side-panel/index.html',
-  },
 } satisfies chrome.runtime.ManifestV3;
 
 export default manifest;

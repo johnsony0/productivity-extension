@@ -1,0 +1,43 @@
+export const twitterSettings = {
+  General: [
+    { id: 'x-timeout', label: 'X Timeout (seconds)', type: 'number', default: 30, min: 0, max: 300, rating: 1 },
+  ],
+  Navigation: [
+    { id: 'x-home-toggle', label: 'Hide Home Button', type: 'checkbox', default: true, rating: 2 },
+    { id: 'x-search-toggle', label: 'Hide Search Button', type: 'checkbox', default: true, rating: 2, tag: 'search' },
+    { id: 'x-notification-toggle', label: 'Hide Notification Button', type: 'checkbox', default: true, rating: 2 },
+    {
+      id: 'x-messages-toggle',
+      label: 'Hide Messages Button',
+      type: 'checkbox',
+      default: true,
+      rating: 2,
+      tag: 'messages',
+    },
+    { id: 'x-grok-toggle', label: 'Hide Grok Button', type: 'checkbox', default: true, rating: 2 },
+    { id: 'x-list-toggle', label: 'Hide List Button', type: 'checkbox', default: true, rating: 2 },
+    { id: 'x-bookmark-toggle', label: 'Hide Bookmark Button', type: 'checkbox', default: true, rating: 2 },
+    { id: 'x-jobs-toggle', label: 'Hide Jobs Button', type: 'checkbox', default: true, rating: 2 },
+    { id: 'x-communities-toggle', label: 'Hide Communities Button', type: 'checkbox', default: true, rating: 2 },
+    { id: 'x-premium-toggle', label: 'Hide Premium Button', type: 'checkbox', default: true, rating: 2 },
+    { id: 'x-business-toggle', label: 'Hide Business Button', type: 'checkbox', default: true, rating: 2 },
+    { id: 'x-profile-toggle', label: 'Hide Profile Button', type: 'checkbox', default: true, rating: 2 },
+    { id: 'x-menu-toggle', label: 'Hide Menu Button', type: 'checkbox', default: true, rating: 2 },
+  ],
+  Posts: [{ id: 'x-stats-toggle', label: 'Hide Data', type: 'checkbox', default: true, rating: 3 }],
+  Home: [
+    { id: 'x-homeposts-toggle', label: 'Hide Posts', type: 'checkbox', default: false, rating: 5 },
+    { id: 'x-foryou-toggle', label: 'Hide For You Button', type: 'checkbox', default: true, rating: 3 },
+    { id: 'x-following-toggle', label: 'Hide Following Button', type: 'checkbox', default: false, rating: 5 },
+    { id: 'x-trending-toggle', label: 'Hide Trending', type: 'checkbox', default: true, rating: 3 },
+    { id: 'x-recc-toggle', label: 'Hide Recommended', type: 'checkbox', default: true, rating: 3 },
+  ],
+  Pages: [
+    { id: 'x-pagesposts-toggle', label: 'Hide Posts', type: 'checkbox', default: false, rating: 5 },
+    { id: 'x-replies-toggle', label: 'Hide Replies', type: 'checkbox', default: true, rating: 3 },
+    { id: 'x-articles-toggle', label: 'Hide Articles', type: 'checkbox', default: true, rating: 3 },
+    { id: 'x-highlights-toggle', label: 'Hide Highlights', type: 'checkbox', default: true, rating: 3 },
+    { id: 'x-media-toggle', label: 'Hide Media', type: 'checkbox', default: true, rating: 3 },
+    { id: 'x-pages-exempt', label: 'Pages Exempt', type: 'array', default: [] },
+  ],
+};
