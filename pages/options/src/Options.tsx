@@ -2,7 +2,7 @@ import '@src/Options.css';
 import React, { useState, useEffect } from 'react';
 import { PlatformSelector, CategorySection } from '@extension/ui';
 import { extensionSettings, facebookSettings, instagramSettings, twitterSettings } from '@extension/shared';
-import { Switch } from '@headlessui/react';
+import { Switch, Label, Field } from '@headlessui/react';
 import { Toast } from '@extension/ui';
 
 export const Options: React.FC = () => {
@@ -11,22 +11,19 @@ export const Options: React.FC = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [showToast, setShowToast] = useState(false);
 
+  // Load saved settings and dark mode preference on initial load
   useEffect(() => {
-    // Load saved settings from chrome.storage.sync
     chrome.storage.sync.get([platform, 'darkMode'], result => {
-      if (result[platform]) {
-        setSettings(result[platform]);
-      } else {
-        setSettings(getDefaultSettings(platform));
-      }
-      if (result.darkMode !== undefined) {
-        setDarkMode(result.darkMode);
-      }
+      const platformSettings = result[platform] || getDefaultSettings(platform);
+      setSettings(platformSettings);
+
+      // Load dark mode preference (default to false if not set)
+      setDarkMode(result.darkMode ?? false);
     });
   }, [platform]);
 
+  // Apply dark mode class to the <html> element and save preference when darkMode changes
   useEffect(() => {
-    // Apply dark mode class to the body
     if (darkMode) {
       document.documentElement.classList.add('dark-theme');
       document.documentElement.classList.remove('light-theme');
@@ -34,7 +31,6 @@ export const Options: React.FC = () => {
       document.documentElement.classList.add('light-theme');
       document.documentElement.classList.remove('dark-theme');
     }
-    // Save dark mode preference
     chrome.storage.sync.set({ darkMode });
   }, [darkMode]);
 
@@ -54,12 +50,15 @@ export const Options: React.FC = () => {
   };
 
   const handleSettingChange = (id: string, value: any) => {
-    const updatedSettings = { ...settings };
-    updatedSettings[id] = value;
+    const updatedSettings = { ...settings, [id]: value };
     setSettings(updatedSettings);
+    console.log(updatedSettings);
+    // Save updated settings to chrome.storage.sync
     chrome.storage.sync.set({ [platform]: updatedSettings }, () => {
-      // Show toast notification when settings are saved
       setShowToast(true);
+    });
+    chrome.storage.sync.get(null, result => {
+      console.log('Entire chrome.storage.sync:', result);
     });
   };
 
@@ -70,6 +69,7 @@ export const Options: React.FC = () => {
         key={category}
         category={category}
         settings={platformSettings[category]}
+        currentSettings={settings}
         onChange={handleSettingChange}
       />
     ));
@@ -77,10 +77,10 @@ export const Options: React.FC = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-bg text-font">
-      <div className="w-full max-w-4xl mx-4 bg-primary p-8 rounded-lg shadow-lg">
+      <div className="w-[90%] lg:w-1/2 h-[90vh] bg-primary p-8 rounded-lg shadow-lg overflow-y-auto">
         <div className="flex justify-between items-center mb-6">
           <PlatformSelector onPlatformChange={setPlatform} />
-          <Switch.Group>
+          <Field>
             <div className="flex items-center">
               <Switch
                 checked={darkMode}
@@ -94,9 +94,9 @@ export const Options: React.FC = () => {
                   } inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
                 />
               </Switch>
-              <Switch.Label className="ml-2 text-sm text-heading">Dark Mode</Switch.Label>
+              <Label className="ml-2 text-sm text-heading">Dark Mode</Label>
             </div>
-          </Switch.Group>
+          </Field>
         </div>
         {renderSettings()}
       </div>

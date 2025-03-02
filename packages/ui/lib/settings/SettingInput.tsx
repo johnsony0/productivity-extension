@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import { Switch } from '@headlessui/react';
-import { Button } from '@headlessui/react';
+import React, { useState, useEffect } from 'react';
+import { Button, Input, Field, Label, Switch, Select } from '@headlessui/react';
 
 interface SettingInputProps {
   setting: any;
@@ -11,11 +10,18 @@ export const SettingInput: React.FC<SettingInputProps> = ({ setting, onChange })
   const [arrayValue, setArrayValue] = useState<string>('');
   const [arrayItems, setArrayItems] = useState<string[]>(setting.default || []);
 
+  // Sync arrayItems with setting.default
+  useEffect(() => {
+    if (setting.default && Array.isArray(setting.default)) {
+      setArrayItems(setting.default);
+    }
+  }, [setting.default]);
+
   const handleArrayAdd = () => {
     if (arrayValue.trim()) {
       const newItems = [...arrayItems, arrayValue.trim()];
       setArrayItems(newItems);
-      onChange(setting.id, newItems);
+      onChange(setting.id, newItems); // Update parent settings
       setArrayValue('');
     }
   };
@@ -23,13 +29,13 @@ export const SettingInput: React.FC<SettingInputProps> = ({ setting, onChange })
   const handleArrayRemove = (item: string) => {
     const newItems = arrayItems.filter(i => i !== item);
     setArrayItems(newItems);
-    onChange(setting.id, newItems);
+    onChange(setting.id, newItems); // Update parent settings
   };
 
   switch (setting.type) {
     case 'checkbox':
       return (
-        <Switch.Group>
+        <Field>
           <div className="flex items-center">
             <Switch
               checked={setting.default}
@@ -43,9 +49,9 @@ export const SettingInput: React.FC<SettingInputProps> = ({ setting, onChange })
                 } inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
               />
             </Switch>
-            <Switch.Label className="ml-4 text-sm text-heading">{setting.label}</Switch.Label>
+            <Label className="ml-4 text-sm text-heading">{setting.label}</Label>
           </div>
-        </Switch.Group>
+        </Field>
       );
     case 'number':
       return (
@@ -53,10 +59,10 @@ export const SettingInput: React.FC<SettingInputProps> = ({ setting, onChange })
           <label htmlFor={setting.id} className="block text-sm font-medium text-heading">
             {setting.label}
           </label>
-          <input
+          <Input
             type="number"
             id={setting.id}
-            defaultValue={setting.default}
+            value={setting.default}
             min={setting.min}
             max={setting.max}
             onChange={e => onChange(setting.id, parseInt(e.target.value))}
@@ -71,7 +77,7 @@ export const SettingInput: React.FC<SettingInputProps> = ({ setting, onChange })
             {setting.label}
           </label>
           <div className="flex">
-            <input
+            <Input
               type="text"
               value={arrayValue}
               onChange={e => setArrayValue(e.target.value)}
@@ -101,9 +107,9 @@ export const SettingInput: React.FC<SettingInputProps> = ({ setting, onChange })
           <label htmlFor={setting.id} className="block text-sm font-medium text-heading">
             {setting.label}
           </label>
-          <select
+          <Select
             id={setting.id}
-            defaultValue={setting.default}
+            value={setting.default}
             onChange={e => onChange(setting.id, e.target.value)}
             className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary sm:text-sm rounded-md shadow-sm bg-primary text-font">
             {setting.options.map((option: any) => (
@@ -111,7 +117,7 @@ export const SettingInput: React.FC<SettingInputProps> = ({ setting, onChange })
                 {option.text}
               </option>
             ))}
-          </select>
+          </Select>
         </div>
       );
     default:

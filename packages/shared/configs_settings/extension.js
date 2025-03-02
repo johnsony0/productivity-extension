@@ -1,6 +1,6 @@
 export const extensionSettings = {
-  Extension: [
-    { id: 'theme-toggle', label: 'Dark Mode', type: 'checkbox', default: false, tag: 'light mode' },
+  //{ id: 'theme-toggle', label: 'Dark Mode', type: 'checkbox', default: false, tag: 'light mode' },
+  General: [
     {
       id: 'ex-timeout',
       label: 'Extension Timeout (seconds)',
@@ -10,8 +10,6 @@ export const extensionSettings = {
       max: 300,
       rating: 1,
     },
-  ],
-  General: [
     { id: 'navs-toggle', label: 'Disable Navigation', type: 'checkbox', default: false, rating: 5 },
     { id: 'scroll-limit', label: 'Limit Scrolling', type: 'checkbox', default: true, rating: 4 },
   ],
