@@ -4,7 +4,7 @@ import { SettingInput } from './SettingInput';
 interface CategorySectionProps {
   category: string;
   settings: any[];
-  currentSettings: any;
+  currentSettings: Record<string, any>;
   onChange: (id: string, value: any) => void;
 }
 

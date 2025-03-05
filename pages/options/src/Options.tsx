@@ -7,15 +7,27 @@ import { Toast } from '@extension/ui';
 
 export const Options: React.FC = () => {
   const [platform, setPlatform] = useState('extension');
-  const [settings, setSettings] = useState<any>({});
+  const [settings, setSettings] = useState<Record<string, any>>({});
   const [darkMode, setDarkMode] = useState(false);
   const [showToast, setShowToast] = useState(false);
+
+  // Helper function to flatten settings into id: value pairs
+  const flattenSettings = (settings: any) => {
+    const flattened: Record<string, any> = {};
+    Object.keys(settings).forEach(category => {
+      settings[category].forEach((setting: any) => {
+        flattened[setting.id] = setting.default;
+      });
+    });
+    return flattened;
+  };
 
   // Load saved settings and dark mode preference on initial load
   useEffect(() => {
     chrome.storage.sync.get([platform, 'darkMode'], result => {
-      const platformSettings = result[platform] || getDefaultSettings(platform);
-      setSettings(platformSettings);
+      const defaultSettings = getDefaultSettings(platform);
+      const flattenedSettings = result[platform] || flattenSettings(defaultSettings);
+      setSettings(flattenedSettings);
 
       // Load dark mode preference (default to false if not set)
       setDarkMode(result.darkMode ?? false);
@@ -52,11 +64,13 @@ export const Options: React.FC = () => {
   const handleSettingChange = (id: string, value: any) => {
     const updatedSettings = { ...settings, [id]: value };
     setSettings(updatedSettings);
-    console.log(updatedSettings);
+
     // Save updated settings to chrome.storage.sync
     chrome.storage.sync.set({ [platform]: updatedSettings }, () => {
       setShowToast(true);
     });
+
+    // Output the entire chrome.storage.sync for debugging
     chrome.storage.sync.get(null, result => {
       console.log('Entire chrome.storage.sync:', result);
     });
