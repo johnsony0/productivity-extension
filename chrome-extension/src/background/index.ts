@@ -14,6 +14,7 @@ chrome.runtime.onInstalled.addListener(() => {
     instagram: flattenSettings(instagramSettings),
     twitter: flattenSettings(twitterSettings),
     darkMode: false,
+    slider: 3,
   };
   chrome.storage.sync.set(defaultSettings, () => {
     console.log('Default settings saved on install.');

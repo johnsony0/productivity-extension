@@ -1,12 +1,11 @@
-import '@src/Options.css';
 import React, { useState, useEffect } from 'react';
-import { PlatformSelector, CategorySection } from '@extension/ui';
+import { PlatformSelector, CategorySection, QuickSettings } from '@extension/ui';
 import { extensionSettings, facebookSettings, instagramSettings, twitterSettings } from '@extension/shared';
 import { Switch, Label, Field } from '@headlessui/react';
 import { Toast } from '@extension/ui';
 
 export const Options: React.FC = () => {
-  const [platform, setPlatform] = useState('extension');
+  const [platform, setPlatform] = useState('quick-settings'); // Default to "Quick Settings"
   const [settings, setSettings] = useState<Record<string, any>>({});
   const [darkMode, setDarkMode] = useState(false);
   const [showToast, setShowToast] = useState(false);
@@ -24,13 +23,17 @@ export const Options: React.FC = () => {
 
   // Load saved settings and dark mode preference on initial load
   useEffect(() => {
-    chrome.storage.sync.get([platform, 'darkMode'], result => {
+    // Load dark mode preference from chrome.storage.sync
+    chrome.storage.sync.get(['darkMode'], result => {
+      setDarkMode(result.darkMode ?? false); // Default to false if not set
+    });
+
+    // Load platform-specific settings (skip for quick-settings)
+    if (platform === 'quick-settings') return;
+    chrome.storage.sync.get([platform], result => {
       const defaultSettings = getDefaultSettings(platform);
       const flattenedSettings = result[platform] || flattenSettings(defaultSettings);
       setSettings(flattenedSettings);
-
-      // Load dark mode preference (default to false if not set)
-      setDarkMode(result.darkMode ?? false);
     });
   }, [platform]);
 
@@ -43,6 +46,8 @@ export const Options: React.FC = () => {
       document.documentElement.classList.add('light-theme');
       document.documentElement.classList.remove('dark-theme');
     }
+
+    // Save dark mode preference to chrome.storage.sync
     chrome.storage.sync.set({ darkMode });
   }, [darkMode]);
 
@@ -57,6 +62,7 @@ export const Options: React.FC = () => {
       case 'twitter':
         return twitterSettings;
       default:
+        console.warn(`Unsupported platform: ${platform}`);
         return {};
     }
   };
@@ -66,17 +72,18 @@ export const Options: React.FC = () => {
     setSettings(updatedSettings);
 
     // Save updated settings to chrome.storage.sync
-    chrome.storage.sync.set({ [platform]: updatedSettings }, () => {
-      setShowToast(true);
-    });
-
-    // Output the entire chrome.storage.sync for debugging
+    chrome.storage.sync.set({ [platform]: updatedSettings });
     chrome.storage.sync.get(null, result => {
-      console.log('Entire chrome.storage.sync:', result);
+      console.log(result);
     });
+    setShowToast(true);
   };
 
   const renderSettings = () => {
+    if (platform === 'quick-settings') {
+      return <QuickSettings onSettingsChange={setShowToast} />;
+    }
+
     const platformSettings = getDefaultSettings(platform) as Record<string, any>;
     return Object.keys(platformSettings).map(category => (
       <CategorySection
