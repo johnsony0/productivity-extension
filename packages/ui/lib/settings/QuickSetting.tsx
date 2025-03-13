@@ -57,13 +57,15 @@ export const QuickSettings: React.FC<QuickSettingsProps> = ({ onSettingsChange }
         Object.keys(platformSettings).forEach(category => {
           platformSettings[category].forEach((setting: any) => {
             if (setting.rating !== undefined) {
-              if (setting.type === 'checkbox') {
-                updatedSettings[setting.id] = setting.rating <= value;
-              } else if (setting.type === 'number') {
-                if (setting.id === 'limit-value') {
-                  updatedSettings[setting.id] = setting.default - 100 * value;
-                } else {
-                  updatedSettings[setting.id] = setting.default * value;
+              if (!toggleStates[setting.tag]) {
+                if (setting.type === 'checkbox') {
+                  updatedSettings[setting.id] = setting.rating <= value;
+                } else if (setting.type === 'number') {
+                  if (setting.id === 'limit-value') {
+                    updatedSettings[setting.id] = setting.default - 100 * value;
+                  } else {
+                    updatedSettings[setting.id] = setting.default * value;
+                  }
                 }
               }
             }
