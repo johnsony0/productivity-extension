@@ -139,28 +139,77 @@ export const QuickSettings: React.FC<QuickSettingsProps> = ({ onSettingsChange }
           />
           <div className="text-sm text-gray-500">Current Value: {sliderValue}</div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
-          <Button
-            onClick={() => handleToggleTag('bias')}
-            className={`w-full h-18 text-base px-6 py-4 bg-secondary text-heading rounded-lg hover:bg-secondary-dark focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 ${
-              toggleStates.bias ? 'border-2 border-white' : ''
-            }`}>
-            Disable Bias Filter
-          </Button>
-          <Button
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full p-4">
+          <button
             onClick={() => handleToggleTag('messages')}
-            className={`w-full h-18 text-base px-6 py-4 bg-secondary text-heading rounded-lg hover:bg-secondary-dark focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 ${
-              toggleStates.messages ? 'border-2 border-white' : ''
+            className={`relative flex items-center justify-center p-4 rounded-xl transition-all duration-200 shadow-md hover:shadow-lg ${
+              toggleStates.messages ? 'bg-secondary text-heading' : 'bg-gray-300 text-gray-800'
             }`}>
-            Enable Messages
-          </Button>
-          <Button
+            <div className="flex flex-col items-center space-y-2">
+              <div className={`p-2 rounded-full`}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
+                  />
+                </svg>
+              </div>
+              <span className="font-medium text-base">Enable Messages</span>
+            </div>
+          </button>
+
+          <button
             onClick={() => handleToggleTag('search')}
-            className={`w-full h-18 text-base px-6 py-4 bg-secondary text-heading rounded-lg hover:bg-secondary-dark focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 ${
-              toggleStates.search ? 'border-2 border-white' : ''
+            className={`relative flex items-center justify-center p-4 rounded-xl transition-all duration-200 shadow-md hover:shadow-lg ${
+              toggleStates.search ? 'bg-secondary text-heading' : 'bg-gray-300 text-gray-800'
             }`}>
-            Enable Search
-          </Button>
+            <div className="flex flex-col items-center space-y-2">
+              <div className={`p-2 rounded-full`}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+              <span className="font-medium text-base">Enable Search</span>
+            </div>
+          </button>
+
+          <button
+            onClick={() => handleToggleTag('bias')}
+            className={`relative flex items-center justify-center p-4 rounded-xl transition-all duration-200 shadow-md hover:shadow-lg ${
+              toggleStates.bias ? 'bg-secondary text-font' : 'bg-gray-300 text-gray-800'
+            }`}>
+            <div className="flex flex-col items-center space-y-2">
+              <div className={`p-2 rounded-full`}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"
+                  />
+                </svg>
+              </div>
+              <span className="font-medium text-base">Disable Bias Filter</span>
+            </div>
+          </button>
         </div>
       </div>
     </div>

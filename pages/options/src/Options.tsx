@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PlatformSelector, CategorySection, QuickSettings } from '@extension/ui';
-import { extensionSettings, facebookSettings, instagramSettings, twitterSettings } from '@extension/shared';
+import { extensionSettings, facebookSettings, instagramSettings, twitterSettings } from '@extension/storage';
 import { Switch, Label, Field } from '@headlessui/react';
 import { Toast } from '@extension/ui';
 
@@ -46,7 +46,6 @@ export const Options: React.FC = () => {
       document.documentElement.classList.add('light-theme');
       document.documentElement.classList.remove('dark-theme');
     }
-
     // Save dark mode preference to chrome.storage.sync
     chrome.storage.sync.set({ darkMode });
   }, [darkMode]);
