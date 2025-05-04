@@ -3,10 +3,12 @@ export const twitterConfigs = {
   postContainer: { selector: 'article', type: 'attribute', parents: 0 },
   messageContainer: { selector: '[data-testid="tweetText"]', type: 'attribute', parents: 0 },
   otherContainers: {},
+  others: {
+    exempt: 'x-pages-exempt',
+    createTimeout: { selector: 'x-timeout', text: 'X/Twitter' },
+  },
   onOpen: {
     General: {
-      exempt: 'x-pages-exempt',
-      createTimeout: { 'x-timeout': { text: 'X/Twitter' } },
       deleteElement: {
         'postings-toggle': [
           { selector: '[data-testid="toolBar"]', type: 'attribute', parents: 11 },

@@ -1,5 +1,5 @@
 interface FindElementInput {
-  type: 'attribute' | 'class' | 'text' | 'image';
+  type: string;
   selector: string;
   parents?: number;
 }

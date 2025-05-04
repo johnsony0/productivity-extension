@@ -1,6 +1,6 @@
 import 'webextension-polyfill';
 import { exampleThemeStorage } from '@extension/storage';
-import { extensionSettings, facebookSettings, instagramSettings, twitterSettings } from '@extension/shared';
+import { extensionSettings, facebookSettings, instagramSettings, twitterSettings } from '@extension/storage';
 import { flattenSettings } from '@extension/shared';
 
 exampleThemeStorage.get().then(theme => {

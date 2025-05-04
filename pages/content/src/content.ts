@@ -1,4 +1,4 @@
-import { checkText, runModel } from '@extension/shared';
+//import { checkText, runModel } from '@extension/shared';
 import { createDataBars, createTimeout, createDropdown, displayLimitReached } from '@extension/shared';
 import { waitForElm, hideElement, deleteElement, hideVideosPhotos, findElement } from '@extension/shared';
 
@@ -13,7 +13,7 @@ import { twitterSettings } from '@extension/storage';
 
 // Define types for settings and configs
 interface FindElementInput {
-  type: 'attribute' | 'class' | 'text' | 'image';
+  type: string;
   selector: string;
   parents?: number;
 }
@@ -22,9 +22,33 @@ type PlatformConfig = {
   mainContainer: FindElementInput;
   postContainer: FindElementInput;
   messageContainer: FindElementInput;
-  otherContainers: { [key: string]: FindElementInput };
-  onPost?: { [functionName: string]: { [filterKey: string]: FindElementInput | FindElementInput[] } };
-  onOpen?: { [category: string]: { [functionName: string]: { [filterKey: string]: any } } };
+  otherContainers: { [key: string]: FindElementInput[] };
+  others: {
+    exempt: string;
+    createTimeout: {
+      selector: string;
+      text: string;
+    };
+  };
+  onOpen: {
+    General: {
+      deleteElement: { [key: string]: FindElementInput | FindElementInput[] };
+    };
+    Navigation: {
+      deleteElement: { [key: string]: FindElementInput | FindElementInput[] };
+    };
+    Home: {
+      url: string;
+      deleteElement: { [key: string]: FindElementInput | FindElementInput[] };
+    };
+    Pages: {
+      url: string;
+      deleteElement: { [key: string]: FindElementInput | FindElementInput[] };
+    };
+  };
+  onPost: {
+    hideElement: { [key: string]: FindElementInput | FindElementInput[] };
+  };
 };
 
 const settingsConfig = {
@@ -80,7 +104,7 @@ const filterPost = async (
   });
 
   // ML pipeline for bias detection
-  const error = checkText(text);
+  /*const error = checkText(text);
   if (!error && !dropdownCreated && messageContainer) {
     console.log(text);
     const prediction = await runModel(text);
@@ -105,10 +129,12 @@ const filterPost = async (
     } else if (settings['bias-filter-visibility'] === 'min' && thresholdExceeded) {
       createDropdown(`Biased towards ${bias} at ${data[bias]}%`, postContainer);
     }
-  }
+  }*/
 };
 
 const filterPage = (configs: PlatformConfig, settings: Settings) => {
+  // Timeout if enabled
+  //createTimeout(settings.others.createTimeout['fb-timeout'].text,settings.others.createTimeout['fb-timeout']);
   // Limit scroll if enabled
   if (settings['scroll-limit']) {
     // artifical default scroll_limit given
@@ -174,7 +200,7 @@ const filterPage = (configs: PlatformConfig, settings: Settings) => {
 
     if (category === "Pages") {
       // Get exempt pages list from settings
-      const exemptPages = settings[configs.onOpen.General.exempt] || [];
+      const exemptPages = settings[configs.others.exempt] || [];
       const exemptRegex = new RegExp(`^/?(${exemptPages.map(page => page.replace(/^\/+/, "")).join("|")})(/|$)`, "i");
       if (exemptRegex.test(currentUrl)) continue;
     }
@@ -192,16 +218,12 @@ const filterPage = (configs: PlatformConfig, settings: Settings) => {
     for (const [functionName, functionData] of Object.entries(functions)) {
       for (const [filterKey, filterData] of Object.entries(functionData)) {
         if (!settings[filterKey]) continue;
-        console.log(filterData);
         switch (functionName) {
           case 'hideElement':
             hideElement(filterData);
             break;
           case 'deleteElement':
             deleteElement(filterData);
-            break;
-          case 'createTimeout':
-            createTimeout(filterData.text, settings[filterKey]);
             break;
           default:
             console.warn(`Unknown function: ${functionName}`);
@@ -259,26 +281,33 @@ function getSettingKeys(nestedSettings: { [key: string]: any }): string[] {
       keys = keys.concat(getSettingKeys(value));
     }
   });
-
+  console.log(keys);
   return keys;
 }
 
 const handleURLChange = () => {
   const url = window.location.hostname + window.location.pathname;
-  chrome.storage.sync.get(getSettingKeys(settingsConfig), (settings: Settings) => {
-    console.log('Settings loaded:', settings);
+
+  chrome.storage.sync.get(null, settings => {
+    let temp = {};
+    temp = { ...temp, ...settings['extension'] };
+    temp = { ...temp, ...settings['quick-settings'] };
+    temp = { ...temp, ...settings['toggleStates'] };
     if (url.includes('facebook.com')) {
-      console.log('Observing Facebook posts...');
-      filterPage(facebookConfigs, settings);
-      setupObserver(facebookConfigs, settings);
+      temp = { ...temp, ...settings['facebook'] };
+      console.log('Observing Facebook posts...', temp);
+      filterPage(facebookConfigs, temp);
+      setupObserver(facebookConfigs, temp);
     } else if (url.includes('instagram.com')) {
-      console.log('Observing Instagram posts...');
-      filterPage(instaConfigs, settings);
-      setupObserver(instaConfigs, settings);
+      temp = { ...temp, ...settings['instagram'] };
+      console.log('Observing Instagram posts...', temp);
+      filterPage(instaConfigs, temp);
+      setupObserver(instaConfigs, temp);
     } else if (url.includes('x.com')) {
-      console.log('Observing Twitter posts...');
-      filterPage(twitterConfigs, settings);
-      setupObserver(twitterConfigs, settings);
+      temp = { ...temp, ...settings['twitter'] };
+      console.log('Observing Twitter posts...', temp);
+      filterPage(twitterConfigs, temp);
+      setupObserver(twitterConfigs, temp);
     } else {
       console.log('This script does not apply to this site.');
     }

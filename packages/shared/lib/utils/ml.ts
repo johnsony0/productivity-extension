@@ -1,10 +1,9 @@
+/*global chrome*/
 // @ts-ignore
-import * as ort from 'onnxruntime-web';
+/*import * as ort from 'onnxruntime-web';
 import { AutoTokenizer, env } from '@xenova/transformers';
 
 env.allowLocalModels = false;
-ort.env.wasm.wasmPaths = chrome.runtime.getURL('');
-const MODEL_URL = chrome.runtime.getURL('models/classification_model.onnx');
 
 const keywords = [
   'election',
@@ -141,12 +140,14 @@ export const checkText = (text: string): CheckTextResult => {
 };
 
 export const runModel = async (text: string): Promise<RunModelResult> => {
+  ort.env.wasm.wasmPaths = "https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/"
+  const model_path = chrome.runtime.getURL('extension/src/model/classification_model.onnx');
   const vectorized_text = await convertTextToVector(text);
   if (vectorized_text === null) {
     return Array(100).fill(0);
   }
   try {
-    const session = await ort.InferenceSession.create(MODEL_URL);
+    const session = await ort.InferenceSession.create(model_path);
     const data = new Int32Array(vectorized_text);
     const tensor_data = new ort.Tensor('int32', data, [1, data.length]);
     const feeds = { input: tensor_data };
@@ -174,3 +175,4 @@ export const convertTextToVector = async (text: string): Promise<ConvertTextToVe
     return null;
   }
 };
+*/

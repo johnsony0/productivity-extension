@@ -3,10 +3,12 @@ export const instaConfigs = {
   postContainer: { selector: 'article', type: 'attribute', parents: 0 },
   messageContainer: { selector: '[style="display: inline;"]', type: 'attribute', parents: 0 },
   otherContainers: {},
+  others: {
+    exempt: 'ig-pages-exempt',
+    createTimeout: { selector: 'ig-timeout', text: 'Instagram' },
+  },
   onOpen: {
     General: {
-      exempt: 'ig-pages-exempt',
-      createTimeout: { 'ig-timeout': { text: 'Instagram' } },
       deleteElement: {
         'postings-toggle': { selector: '[aria-label="New post"]', type: 'attribute', parents: 8 },
       },

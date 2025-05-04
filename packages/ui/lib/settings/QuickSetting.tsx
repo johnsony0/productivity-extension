@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from '@headlessui/react';
-import { extensionSettings, facebookSettings, instagramSettings, twitterSettings } from '@extension/shared';
+import { extensionSettings, facebookSettings, instagramSettings, twitterSettings } from '@extension/storage';
 
 interface QuickSettingsProps {
   onSettingsChange: (showToast: boolean) => void;

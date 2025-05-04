@@ -16,10 +16,12 @@ export const facebookConfigs = {
       { selector: 'People you may know', type: 'text', parents: 8 },
     ],
   },
+  others: {
+    exempt: 'fb-pages-exempt',
+    createTimeout: { selector: 'fb-timeout', text: 'Facebook' },
+  },
   onOpen: {
     General: {
-      exempt: 'fb-pages-exempt',
-      createTimeout: { 'fb-timeout': { text: 'Facebook' } },
       deleteElement: {
         'fb-messengeroverlay-toggle': { selector: '[aria-label="New message"]', type: 'attribute', parents: 4 },
         'fb-stories-toggle': { selector: '[aria-label="Stories"]', type: 'attribute', parents: 0 },
@@ -32,7 +34,7 @@ export const facebookConfigs = {
         'fb-profile-toggle': {
           selector: `x1i10hfl x1qjc9v5 xjbqb8w xjqpnuy xa49m3k xqeqjp1 x2hbi6w x13fuv20 xu3j5b3 x1q0q8m5 x26u7qi x972fbf xcfux6l x1qhh985 xm0m39n x9f619 x1ypdohk xdl72j9 x2lah0s xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r x2lwn1j xeuugli xexx8yu x4uap5 x18d9i69 xkhd6sd x1n2onr6 x16tdsg8 x1hl2dhg xggy1nq x1ja2u2z x1t137rt x1q0g3np x87ps6o x1lku1pv x1a2a7pz x1lq5wgf xgqcy7u x30kzoy x9jhf4c x1lliihq`,
           type: 'class',
-          parents: 0, // Corrected from '0' to 0
+          parents: 0,
         },
         'fb-home-toggle': { selector: '[aria-label="Home"]', type: 'attribute', parents: 3 },
         'fb-video-toggle': { selector: '[aria-label="Video"]', type: 'attribute', parents: 3 },
