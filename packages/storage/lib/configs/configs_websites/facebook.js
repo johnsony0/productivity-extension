@@ -93,6 +93,7 @@ export const facebookConfigs = {
           parents: 0,
         },
         { selector: 'Comments', type: 'text', parents: 2 },
+        { selector: 'xabvvm4 xeyy32k x1ia1hqs x1a2w583 x6ikm8r x10wlt6ss2', type: 'class', parents: 0 },
       ],
       'reacts-toggle': [
         { selector: '[aria-label="See who reacted to this"]', type: 'attribute', parents: 1 },

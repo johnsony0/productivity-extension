@@ -51,13 +51,6 @@ type PlatformConfig = {
   };
 };
 
-const settingsConfig = {
-  Extension: extensionSettings,
-  Facebook: facebookSettings,
-  Instagram: instagramSettings,
-  Twitter: twitterSettings,
-};
-
 const filterPost = async (
   platformConfig: PlatformConfig,
   settings: Settings,
@@ -194,40 +187,43 @@ const filterPage = (configs: PlatformConfig, settings: Settings) => {
     }
   }
 
-  // Hide or manage elements based on settings and URL
-  for (const [category, functions] of Object.entries(configs.onOpen || {})) {
-    /*const currentUrl = window.location.pathname;
-
-    if (category === "Pages") {
-      // Get exempt pages list from settings
-      const exemptPages = settings[configs.others.exempt] || [];
-      const exemptRegex = new RegExp(`^/?(${exemptPages.map(page => page.replace(/^\/+/, "")).join("|")})(/|$)`, "i");
-      if (exemptRegex.test(currentUrl)) continue;
+  /* Filter by URL
+  if (functions.url) {
+    if (functions.url === "/*") {
+      if (currentUrl === "/" || currentUrl === "/home" || !currentUrl.startsWith("/")) continue;
+    } else if (!currentUrl.startsWith(functions.url)) {
+      continue;
     }
+  }*/
 
-    // Filter by URL
-    if (functions.url) {
-      if (functions.url === "/*") {
-        if (currentUrl === "/" || currentUrl === "/home" || !currentUrl.startsWith("/")) continue;
-      } else if (!currentUrl.startsWith(functions.url)) {
-        continue;
-      }
-    }*/
-
-    // if correct url and not exempt, then filter
-    for (const [functionName, functionData] of Object.entries(functions)) {
-      for (const [filterKey, filterData] of Object.entries(functionData)) {
-        if (!settings[filterKey]) continue;
-        switch (functionName) {
-          case 'hideElement':
-            hideElement(filterData);
-            break;
-          case 'deleteElement':
-            deleteElement(filterData);
-            break;
-          default:
-            console.warn(`Unknown function: ${functionName}`);
+  const currentUrl = window.location.pathname;
+  const exemptPages = settings[configs.others.exempt] || [];
+  const exemptRegex = new RegExp(
+    `^/?(${exemptPages.map((page: string) => page.replace(/^\/+/, '')).join('|')})(/|$)`,
+    'i',
+  );
+  if (!exemptRegex.test(currentUrl)) {
+    // Hide or manage elements based on settings and URL
+    for (const [category, functions] of Object.entries(configs.onOpen || {})) {
+      // if correct url and not exempt, then filter
+      for (const [functionName, functionData] of Object.entries(functions)) {
+        for (const [filterKey, filterData] of Object.entries(functionData)) {
+          if (!settings[filterKey]) continue;
+          switch (functionName) {
+            case 'hideElement':
+              hideElement(filterData);
+              break;
+            case 'deleteElement':
+              deleteElement(filterData);
+              break;
+            default:
+              console.warn(`Unknown function: ${functionName}`);
+          }
         }
+      }
+
+      if (settings[configs.others.createTimeout.selector]) {
+        createTimeout(configs.others.createTimeout.text, settings[configs.others.createTimeout.selector]);
       }
     }
   }
@@ -271,19 +267,6 @@ const setupObserver = (platformConfig: PlatformConfig, settings: Settings) => {
     observer.observe(mainContainer, { childList: true, subtree: true });
   });
 };
-
-function getSettingKeys(nestedSettings: { [key: string]: any }): string[] {
-  let keys: string[] = [];
-  Object.values(nestedSettings).forEach(value => {
-    if (Array.isArray(value)) {
-      keys = keys.concat(value.map((setting: { id: string }) => setting.id));
-    } else if (typeof value === 'object') {
-      keys = keys.concat(getSettingKeys(value));
-    }
-  });
-  console.log(keys);
-  return keys;
-}
 
 const handleURLChange = () => {
   const url = window.location.hostname + window.location.pathname;

@@ -147,10 +147,7 @@ export const displayLimitReached = (adjacentElement: HTMLElement, postLimit: num
   quoteText.style.textAlign = 'center';
   quoteText.style.margin = '0 20px';
   quoteText.innerHTML = `
-    "If you can get 1 percent better each day for one year, 
-    you’ll end up thirty-seven times better by the time you’re done. 
-    Conversely, if you get 1 percent worse each day for one year, 
-    you’ll decline nearly down to zero."
+    ":("
   `;
   messageContainer.appendChild(quoteText);
 
@@ -159,7 +156,7 @@ export const displayLimitReached = (adjacentElement: HTMLElement, postLimit: num
   citation.style.display = 'block';
   citation.style.fontSize = '1rem';
   citation.style.color = 'rgba(255, 255, 255, 0.8)';
-  citation.innerText = `- James Clear, Atomic Habits`;
+  citation.innerText = `- me`;
   messageContainer.appendChild(citation);
 
   adjacentElement.insertAdjacentElement('beforebegin', messageContainer);
