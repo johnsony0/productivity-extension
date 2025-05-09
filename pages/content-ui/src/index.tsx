@@ -30,5 +30,5 @@ if (navigator.userAgent.includes('Firefox')) {
   shadowRoot.adoptedStyleSheets = [globalStyleSheet];
 }
 
-shadowRoot.appendChild(rootIntoShadow);
-createRoot(rootIntoShadow).render(<App />);
+/*shadowRoot.appendChild(rootIntoShadow);
+createRoot(rootIntoShadow).render(<App />);*/

@@ -6,11 +6,6 @@ import { facebookConfigs } from '@extension/storage';
 import { instaConfigs } from '@extension/storage';
 import { twitterConfigs } from '@extension/storage';
 
-import { extensionSettings } from '@extension/storage';
-import { facebookSettings } from '@extension/storage';
-import { instagramSettings } from '@extension/storage';
-import { twitterSettings } from '@extension/storage';
-
 // Define types for settings and configs
 interface FindElementInput {
   type: string;
