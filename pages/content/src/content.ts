@@ -1,4 +1,4 @@
-//import { checkText, runModel } from '@extension/shared';
+import { checkText, runModel } from '@extension/shared';
 import { createDataBars, createTimeout, createDropdown, displayLimitReached } from '@extension/shared';
 import { waitForElm, hideElement, deleteElement, hideVideosPhotos, findElement } from '@extension/shared';
 
@@ -90,9 +90,9 @@ const filterPost = async (
       }
     }
   });
-
+  /*
   // ML pipeline for bias detection
-  /*const error = checkText(text);
+  const error = checkText(text);
   if (!error && !dropdownCreated && messageContainer) {
     console.log(text);
     const prediction = await runModel(text);
@@ -197,6 +197,7 @@ const filterPage = (configs: PlatformConfig, settings: Settings) => {
     `^/?(${exemptPages.map((page: string) => page.replace(/^\/+/, '')).join('|')})(/|$)`,
     'i',
   );
+  console.log(!exemptRegex.test(currentUrl));
   if (!exemptRegex.test(currentUrl)) {
     // Hide or manage elements based on settings and URL
     for (const [category, functions] of Object.entries(configs.onOpen || {})) {
