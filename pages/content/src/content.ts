@@ -1,4 +1,4 @@
-import { checkText, runModel } from '@extension/shared';
+import { checkText, runModel, initModel } from '@extension/shared';
 import { createDataBars, createTimeout, createDropdown, displayLimitReached } from '@extension/shared';
 import { waitForElm, hideElement, deleteElement, hideVideosPhotos, findElement } from '@extension/shared';
 
@@ -90,12 +90,13 @@ const filterPost = async (
       }
     }
   });
-  /*
+
   // ML pipeline for bias detection
   const error = checkText(text);
   if (!error && !dropdownCreated && messageContainer) {
     console.log(text);
     const prediction = await runModel(text);
+    console.log(prediction);
     const data = {
       left: Math.round(prediction[0] * 100),
       center: Math.round(prediction[2] * 100),
@@ -117,7 +118,7 @@ const filterPost = async (
     } else if (settings['bias-filter-visibility'] === 'min' && thresholdExceeded) {
       createDropdown(`Biased towards ${bias} at ${data[bias]}%`, postContainer);
     }
-  }*/
+  }
 };
 
 const filterPage = (configs: PlatformConfig, settings: Settings) => {
@@ -265,8 +266,8 @@ const setupObserver = (platformConfig: PlatformConfig, settings: Settings) => {
 };
 
 const handleURLChange = () => {
+  initModel();
   const url = window.location.hostname + window.location.pathname;
-
   chrome.storage.sync.get(null, settings => {
     let temp = {};
     temp = { ...temp, ...settings['extension'] };

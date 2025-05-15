@@ -13,6 +13,7 @@
     "manifest.ts",
     "../node_modules/@types",
     "../packages/shared/lib/utils/scripts.ts",
-    "../packages/shared/lib/utils/ml.ts"
+    "../packages/shared/lib/utils/ml.ts",
+    "public/ort-wasm-simd-threaded.jsep.mjs"
   ]
 }
