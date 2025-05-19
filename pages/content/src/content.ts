@@ -1,6 +1,6 @@
 import { checkText, runModel, initModel } from '@extension/shared';
 import { createDataBars, createTimeout, createDropdown, displayLimitReached } from '@extension/shared';
-import { waitForElm, hideElement, deleteElement, hideVideosPhotos, findElement } from '@extension/shared';
+import { waitForElm, hideElement, hideElements, deleteElement, hideVideosPhotos, findElement } from '@extension/shared';
 
 import { facebookConfigs } from '@extension/storage';
 import { instaConfigs } from '@extension/storage';
@@ -43,6 +43,7 @@ type PlatformConfig = {
   };
   onPost: {
     hideElement: { [key: string]: FindElementInput | FindElementInput[] };
+    hideElements: { [key: string]: FindElementInput | FindElementInput[] };
   };
 };
 
@@ -62,7 +63,15 @@ const filterPost = async (
   const onPostFilters = platformConfig.onPost || {};
   for (const [functionName, filters] of Object.entries(onPostFilters)) {
     for (const [filterKey, targetElements] of Object.entries(filters)) {
-      if (settings[filterKey]) hideElement(targetElements, postContainer);
+      if (!settings[filterKey]) continue;
+      switch (functionName) {
+        case 'hideElement':
+          hideElement(targetElements, postContainer);
+          break;
+        case 'hideElements':
+          hideElements(targetElements, postContainer);
+          break;
+      }
     }
   }
 
@@ -179,27 +188,13 @@ const filterPage = (configs: PlatformConfig, settings: Settings) => {
   // Hide initial elements
   for (const [functionName, filters] of Object.entries(configs.onPost || {})) {
     for (const [filterKey, filterData] of Object.entries(filters)) {
-      if (settings[filterKey]) hideElement(filterData, document);
+      if (settings[filterKey]) deleteElement(filterData, document);
     }
   }
 
-  /* Filter by URL
-  if (functions.url) {
-    if (functions.url === "/*") {
-      if (currentUrl === "/" || currentUrl === "/home" || !currentUrl.startsWith("/")) continue;
-    } else if (!currentUrl.startsWith(functions.url)) {
-      continue;
-    }
-  }*/
-
   const currentUrl = window.location.pathname;
   const exemptPages = settings[configs.others.exempt] || [];
-  const exemptRegex = new RegExp(
-    `^/?(${exemptPages.map((page: string) => page.replace(/^\/+/, '')).join('|')})(/|$)`,
-    'i',
-  );
-  console.log(!exemptRegex.test(currentUrl));
-  if (!exemptRegex.test(currentUrl)) {
+  if (!exemptPages.includes(currentUrl)) {
     // Hide or manage elements based on settings and URL
     for (const [category, functions] of Object.entries(configs.onOpen || {})) {
       // if correct url and not exempt, then filter

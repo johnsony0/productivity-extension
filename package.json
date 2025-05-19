@@ -11,6 +11,7 @@
   },
   "type": "module",
   "scripts": {
+    "init": "$env:NODE_OPTIONS='--max-old-space-size=8192'",
     "clean:bundle": "rimraf dist && turbo clean:bundle",
     "clean:node_modules": "pnpx rimraf node_modules && pnpx turbo clean:node_modules",
     "clean:turbo": "rimraf .turbo && turbo clean:turbo",

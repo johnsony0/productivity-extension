@@ -50,13 +50,31 @@ export const findElement = (node: ParentNode, input: FindElementInput): HTMLElem
   return currentElement as HTMLElement | null;
 };
 
+const findElements = (node: ParentNode, input: FindElementInput): HTMLElement[] | null => {
+  let elements: Element[] = [];
+  if (input.type === 'attribute') {
+    elements = Array.from(node.querySelectorAll(input.selector));
+  }
+  const returnElements: HTMLElement[] = elements
+    .map(element => {
+      let currentElement: ParentNode | Element | null = element;
+      for (let i = 0; i < (input.parents || 0); i++) {
+        if (currentElement && currentElement.parentNode) {
+          currentElement = currentElement.parentNode;
+        }
+      }
+      return currentElement as HTMLElement | null;
+    })
+    .filter((element): element is HTMLElement => element !== null);
+  return returnElements.length > 0 ? returnElements : null;
+};
+
 export function waitForElm(node: ParentNode | Document, input: FindElementInput): Promise<HTMLElement | null> {
   return new Promise(resolve => {
     const elm = findElement(node, input);
     if (elm) {
       return resolve(elm);
     }
-
     const observer = new MutationObserver(() => {
       const elm = findElement(node, input);
       if (elm) {
@@ -64,7 +82,6 @@ export function waitForElm(node: ParentNode | Document, input: FindElementInput)
         resolve(elm);
       }
     });
-
     observer.observe(node instanceof Node ? node : document, {
       childList: true,
       subtree: true,
@@ -76,6 +93,19 @@ export const hideElement = (elements: FindElementInput | FindElementInput[], nod
   const inputs: FindElementInput[] = Array.isArray(elements) ? elements : [elements];
   inputs.forEach(input => {
     waitForElm(node || document, input).then(elm => {
+      if (elm) {
+        (elm as HTMLElement).style.display = 'none';
+      }
+    });
+  });
+};
+
+export const hideElements = (elements: FindElementInput | FindElementInput[], node?: ParentNode | Document): void => {
+  const inputs: FindElementInput[] = Array.isArray(elements) ? elements : [elements];
+  inputs.forEach(input => {
+    const elements = findElements(node || document, input);
+    console.log(node, elements);
+    elements?.forEach(elm => {
       if (elm) {
         (elm as HTMLElement).style.display = 'none';
       }

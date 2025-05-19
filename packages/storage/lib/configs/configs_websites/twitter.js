@@ -66,6 +66,7 @@ export const twitterConfigs = {
     },
   },
   onPost: {
+    hideElements: {},
     hideElement: {
       'comments-toggle': [{ selector: '[data-testid="reply"]', type: 'attribute', parents: 0 }],
       'reacts-toggle': [{ selector: '[data-testid="like"]', type: 'attribute', parents: 0 }],

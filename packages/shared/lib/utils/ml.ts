@@ -34,7 +34,6 @@ export const runModel = async (text: string): Promise<RunModelResult> => {
   }
   try {
     const session = await ort.InferenceSession.create(MODEL_PATH);
-    console.log('gets past session');
     const data = new Int32Array(vectorized_text);
     const tensor_data = new ort.Tensor('int32', data, [1, data.length]);
     const feeds = { input: tensor_data };

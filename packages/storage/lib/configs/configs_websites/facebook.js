@@ -25,7 +25,10 @@ export const facebookConfigs = {
       deleteElement: {
         'fb-messengeroverlay-toggle': { selector: '[aria-label="New message"]', type: 'attribute', parents: 4 },
         'fb-stories-toggle': { selector: '[aria-label="Stories"]', type: 'attribute', parents: 0 },
-        'postings-toggle': { selector: '[aria-label="Create a post"]', type: 'attribute', parents: 1 },
+        'postings-toggle': [
+          { selector: '[aria-label="Create a post"]', type: 'attribute', parents: 1 },
+          { selector: 'Write something...', type: 'text', parents: 4 },
+        ],
       },
     },
     Navigation: {
@@ -76,6 +79,9 @@ export const facebookConfigs = {
     },
   },
   onPost: {
+    hideElements: {
+      'comments-toggle': [{ selector: `[role="article"]`, type: 'attribute', parents: 2 }],
+    },
     hideElement: {
       'comments-toggle': [
         {
@@ -85,7 +91,6 @@ export const facebookConfigs = {
           parents: 0,
         },
         { selector: `[aria-label="Leave a comment"]`, type: 'attribute', parents: 0 },
-        { selector: `[role="article"]`, type: 'attribute', parents: 2 },
         { selector: 'xdj266r xat24cr x1d52u69 xktsk01', type: 'class', parents: 0 },
         {
           selector: 'x9f619 x1n2onr6 x1ja2u2z x78zum5 xdt5ytf x2lah0s x193iq5w x1ye3gou xn6708d',

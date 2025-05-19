@@ -33,7 +33,7 @@ export const instaConfigs = {
           type: 'class',
           parents: 0,
         },
-        'ig-stories-toggle': { selector: '[role="menu"]', type: 'attribute', parents: 0 },
+        'ig-stories-toggle': { selector: '[data-pagelet="story_tray"]', type: 'attribute', parents: 0 },
         'ig-suggestedfriends-toggle': { selector: 'Suggested for you', type: 'text', parents: 3 },
       },
     },
@@ -52,6 +52,7 @@ export const instaConfigs = {
   },
 
   onPost: {
+    hideElements: {},
     hideElement: {
       'comments-toggle': [
         { selector: 'View all', type: 'text', parents: 2 },
