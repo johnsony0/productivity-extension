@@ -37,6 +37,26 @@ export const extensionSettings = {
     { id: 'shares-toggle', label: 'Hide Shares', type: 'checkbox', default: true, rating: 3 },
     { id: 'saves-toggle', label: 'Hide Save', type: 'checkbox', default: true, rating: 3 },
   ],
+  Topic: [
+    {
+      id: 'topic-filter-visibility',
+      label: 'Topic Filter Visibility',
+      type: 'select',
+      default: 'min',
+      tag: 'bias',
+      options: [
+        { value: 'min', text: 'Minimize' },
+        { value: 'hide', text: 'Hide' },
+      ],
+    },
+    { id: 'enable-tech', label: 'Tech', type: 'checkbox', default: true, tag: 'topic', rating: 1 },
+    { id: 'enable-sports', label: 'Sports', type: 'checkbox', default: true, tag: 'topic', rating: 1 },
+    { id: 'enable-politics', label: 'Politics', type: 'checkbox', default: true, tag: 'topic', rating: 1 },
+    { id: 'enable-gaming', label: 'Gaming', type: 'checkbox', default: true, tag: 'topic', rating: 1 },
+    { id: 'enable-food', label: 'Food', type: 'checkbox', default: true, tag: 'topic', rating: 1 },
+    { id: 'enable-business', label: 'Business', type: 'checkbox', default: true, tag: 'topic', rating: 1 },
+    { id: 'topic-threshold', label: 'Threshold', type: 'number', default: 50, min: 5, max: 95 },
+  ],
   Bias: [
     {
       id: 'bias-filter-visibility',
@@ -52,6 +72,6 @@ export const extensionSettings = {
     { id: 'enable-left', label: 'Left Leaning', type: 'checkbox', default: true, tag: 'bias', rating: 1 },
     //{id: 'enable-center',label: 'Center Leaning',type: 'checkbox', default: false, rating: 1},
     { id: 'enable-right', label: 'Right Leaning', type: 'checkbox', default: true, tag: 'bias', rating: 1 },
-    { id: 'threshold', label: 'Threshold', type: 'number', default: 50, min: 5, max: 95 },
+    { id: 'bias-threshold', label: 'Threshold', type: 'number', default: 50, min: 5, max: 95 },
   ],
 };

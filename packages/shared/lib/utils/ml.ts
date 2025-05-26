@@ -26,11 +26,11 @@ export const checkText = (text: string): CheckTextResult => {
   return null;
 };
 
-export const runModel = async (text: string): Promise<RunModelResult> => {
-  const MODEL_PATH = chrome.runtime.getURL('classification_model.onnx');
+export const runTopicModel = async (text: string): Promise<RunModelResult> => {
+  const MODEL_PATH = chrome.runtime.getURL('topic_model.onnx');
   const vectorized_text = await convertTextToVector(text);
   if (vectorized_text === null) {
-    return Array(100).fill(0);
+    return Array(6).fill(0);
   }
   try {
     const session = await ort.InferenceSession.create(MODEL_PATH);
@@ -41,7 +41,26 @@ export const runModel = async (text: string): Promise<RunModelResult> => {
     return results.output.data;
   } catch (error) {
     console.error('Error creating inference session or running the model:', error);
-    return Array(100).fill(0);
+    return Array(6).fill(0);
+  }
+};
+
+export const runBiasModel = async (text: string): Promise<RunModelResult> => {
+  const MODEL_PATH = chrome.runtime.getURL('bias_model.onnx');
+  const vectorized_text = await convertTextToVector(text);
+  if (vectorized_text === null) {
+    return Array(3).fill(0);
+  }
+  try {
+    const session = await ort.InferenceSession.create(MODEL_PATH);
+    const data = new Int32Array(vectorized_text);
+    const tensor_data = new ort.Tensor('int32', data, [1, data.length]);
+    const feeds = { input: tensor_data };
+    const results = await session.run(feeds);
+    return results.output.data;
+  } catch (error) {
+    console.error('Error creating inference session or running the model:', error);
+    return Array(3).fill(0);
   }
 };
 

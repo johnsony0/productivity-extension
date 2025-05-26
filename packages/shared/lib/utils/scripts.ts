@@ -104,7 +104,6 @@ export const hideElements = (elements: FindElementInput | FindElementInput[], no
   const inputs: FindElementInput[] = Array.isArray(elements) ? elements : [elements];
   inputs.forEach(input => {
     const elements = findElements(node || document, input);
-    console.log(node, elements);
     elements?.forEach(elm => {
       if (elm) {
         (elm as HTMLElement).style.display = 'none';

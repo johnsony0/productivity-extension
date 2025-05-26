@@ -1,4 +1,4 @@
-import { checkText, runModel, initModel } from '@extension/shared';
+import { runBiasModel, runTopicModel, initModel } from '@extension/shared';
 import { createDataBars, createTimeout, createDropdown, displayLimitReached } from '@extension/shared';
 import { waitForElm, hideElement, hideElements, deleteElement, hideVideosPhotos, findElement } from '@extension/shared';
 
@@ -100,32 +100,41 @@ const filterPost = async (
     }
   });
 
+  const topic_prediction = await runTopicModel(text);
+  const topic_data = {
+    tech: Math.round(topic_prediction[0] * 100),
+    sports: Math.round(topic_prediction[1] * 100),
+    politics: Math.round(topic_prediction[2] * 100),
+    gaming: Math.round(topic_prediction[3] * 100),
+    food: Math.round(topic_prediction[4] * 100),
+    business: Math.round(topic_prediction[5] * 100),
+  };
+  const bias = Object.keys(topic_data).reduce((a, b) =>
+    topic_data[a as keyof typeof topic_data] > topic_data[b as keyof typeof topic_data] ? a : b,
+  );
+  console.log(text, topic_data, bias);
+
   // ML pipeline for bias detection
-  const error = checkText(text);
-  if (!error && !dropdownCreated && messageContainer) {
-    console.log(text);
-    const prediction = await runModel(text);
-    console.log(prediction);
-    const data = {
-      left: Math.round(prediction[0] * 100),
-      center: Math.round(prediction[2] * 100),
-      right: Math.round(prediction[1] * 100),
+  if (bias == 'politics' && !dropdownCreated && messageContainer) {
+    const bias_prediction = await runBiasModel(text);
+    const bias_data = {
+      left: Math.round(bias_prediction[0] * 100),
+      center: Math.round(bias_prediction[2] * 100),
+      right: Math.round(bias_prediction[1] * 100),
     };
-
-    const bias = Object.keys(data).reduce((a, b) =>
-      data[a as keyof typeof data] > data[b as keyof typeof data] ? a : b,
+    const bias = Object.keys(bias_data).reduce((a, b) =>
+      bias_data[a as keyof typeof bias_data] > bias_data[b as keyof typeof bias_data] ? a : b,
     );
-    createDataBars(data, postContainer);
+    createDataBars(bias_data, postContainer);
 
-    const thresholdExceeded =
-      (bias === 'left' && settings['enable-left'] && data['left'] > settings['threshold']) ||
-      (bias === 'right' && settings['enable-right'] && data['right'] > settings['threshold']) ||
-      (bias === 'center' && settings['enable-center'] && data['center'] > settings['threshold']);
-
-    if (settings['bias-filter-visibility'] === 'hide' && thresholdExceeded) {
+    const biasThresholdExceeded =
+      (bias === 'left' && settings['enable-left'] && bias_data['left'] > settings['bias-threshold']) ||
+      (bias === 'right' && settings['enable-right'] && bias_data['right'] > settings['bias-threshold']) ||
+      (bias === 'center' && settings['enable-center'] && bias_data['center'] > settings['bias-threshold']);
+    if (settings['bias-filter-visibility'] === 'hide' && biasThresholdExceeded) {
       postContainer.style.display = 'none';
-    } else if (settings['bias-filter-visibility'] === 'min' && thresholdExceeded) {
-      createDropdown(`Biased towards ${bias} at ${data[bias]}%`, postContainer);
+    } else if (settings['bias-filter-visibility'] === 'min' && biasThresholdExceeded) {
+      createDropdown(`Biased towards ${bias} at ${bias_data[bias]}%`, postContainer);
     }
   }
 };
