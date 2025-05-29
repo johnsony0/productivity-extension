@@ -16,7 +16,7 @@ export const CategorySection: React.FC<CategorySectionProps> = ({ category, sett
         {settings.map(setting => (
           <SettingInput
             key={setting.id}
-            setting={{ ...setting, default: currentSettings[setting.id] }}
+            setting={{ ...setting, value: currentSettings[setting.id] }}
             onChange={onChange}
           />
         ))}

@@ -45,15 +45,30 @@ const manifest = {
   },
   content_scripts: [
     {
-      matches: ['https://*.facebook.com/*', 'https://*.x.com/*', 'https://*.instagram.com/*'],
+      matches: [
+        'https://*.facebook.com/*',
+        'https://*.x.com/*',
+        'https://*.instagram.com/*',
+        'https://*.youtube.com/*',
+      ],
       js: ['content/index.iife.js'],
     },
     {
-      matches: ['https://*.facebook.com/*', 'https://*.x.com/*', 'https://*.instagram.com/*'],
+      matches: [
+        'https://*.facebook.com/*',
+        'https://*.x.com/*',
+        'https://*.instagram.com/*',
+        'https://*.youtube.com/*',
+      ],
       js: ['content-ui/index.iife.js'],
     },
     {
-      matches: ['https://*.facebook.com/*', 'https://*.x.com/*', 'https://*.instagram.com/*'],
+      matches: [
+        'https://*.facebook.com/*',
+        'https://*.x.com/*',
+        'https://*.instagram.com/*',
+        'https://*.youtube.com/*',
+      ],
       css: ['content.css'],
     },
   ],

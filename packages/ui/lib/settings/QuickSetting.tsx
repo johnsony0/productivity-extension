@@ -8,7 +8,7 @@ interface QuickSettingsProps {
 export const QuickSettings: React.FC<QuickSettingsProps> = ({ onSettingsChange }) => {
   const [sliderValue, setSliderValue] = useState(3);
   const [toggleStates, setToggleStates] = useState<Record<string, boolean>>({
-    bias: false,
+    ai: false,
     messages: false,
     search: false,
   });
@@ -103,7 +103,7 @@ export const QuickSettings: React.FC<QuickSettingsProps> = ({ onSettingsChange }
         Object.keys(platformSettings).forEach(category => {
           platformSettings[category].forEach((setting: any) => {
             if (setting.tag === tag) {
-              updatedSettings[setting.id] = !newToggleStates[tag]; // Update only the relevant setting
+              updatedSettings[setting.id] = toggleStates[tag]; // Update only the relevant setting
             }
           });
         });
@@ -186,9 +186,11 @@ export const QuickSettings: React.FC<QuickSettingsProps> = ({ onSettingsChange }
           </button>
 
           <button
-            onClick={() => handleToggleTag('bias')}
+            onClick={() => {
+              handleToggleTag('ai');
+            }}
             className={`relative flex items-center justify-center p-4 rounded-xl transition-all duration-200 shadow-md hover:shadow-lg ${
-              toggleStates.bias ? 'bg-secondary text-font' : 'bg-gray-300 text-gray-800'
+              toggleStates.ai ? 'bg-secondary text-font' : 'bg-gray-300 text-gray-800'
             }`}>
             <div className="flex flex-col items-center space-y-2">
               <div className={`p-2 rounded-full`}>
@@ -206,7 +208,7 @@ export const QuickSettings: React.FC<QuickSettingsProps> = ({ onSettingsChange }
                   />
                 </svg>
               </div>
-              <span className="font-medium text-base">Disable Bias Filter</span>
+              <span className="font-medium text-base">Disable AI/ML Models</span>
             </div>
           </button>
         </div>

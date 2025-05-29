@@ -77,10 +77,14 @@ export const facebookConfigs = {
         'fb-photos-toggle': { selector: 'See all photos', type: 'text', parents: 16 },
       },
     },
+    Posts: {
+      url: '',
+      deleteElement: {},
+    },
   },
   onPost: {
     hideElements: {
-      'comments-toggle': [{ selector: `[role="article"]`, type: 'attribute', parents: 2 }],
+      'comments-toggle': { selector: `[role="article"]`, type: 'attribute', parents: 2 },
     },
     hideElement: {
       'comments-toggle': [

@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { PlatformSelector, CategorySection, QuickSettings } from '@extension/ui';
-import { extensionSettings, facebookSettings, instagramSettings, twitterSettings } from '@extension/storage';
+import {
+  extensionSettings,
+  facebookSettings,
+  instagramSettings,
+  twitterSettings,
+  youtubeSettings,
+} from '@extension/storage';
 import { Switch, Label, Field } from '@headlessui/react';
 import { Toast } from '@extension/ui';
 
@@ -60,6 +66,8 @@ export const Options: React.FC = () => {
         return instagramSettings;
       case 'twitter':
         return twitterSettings;
+      case 'youtube':
+        return youtubeSettings;
       default:
         console.warn(`Unsupported platform: ${platform}`);
         return {};

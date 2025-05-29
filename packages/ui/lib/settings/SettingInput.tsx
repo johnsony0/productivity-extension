@@ -8,14 +8,28 @@ interface SettingInputProps {
 
 export const SettingInput: React.FC<SettingInputProps> = ({ setting, onChange }) => {
   const [arrayValue, setArrayValue] = useState<string>('');
-  const [arrayItems, setArrayItems] = useState<string[]>(setting.default || []);
+  const [arrayItems, setArrayItems] = useState<string[]>(setting.value || []);
+  const [toggleStates, setToggleStates] = useState<Record<string, boolean>>({
+    ai: false,
+    messages: false,
+    search: false,
+  });
 
-  // Sync arrayItems with setting.default
+  // Load saved slider value and toggle states on initial load
   useEffect(() => {
-    if (setting.default && Array.isArray(setting.default)) {
-      setArrayItems(setting.default);
+    chrome.storage.sync.get(['toggleStates'], result => {
+      if (result.toggleStates !== undefined) {
+        setToggleStates(result.toggleStates);
+      }
+    });
+  }, []);
+
+  // Sync arrayItems with setting.value
+  useEffect(() => {
+    if (setting.value && Array.isArray(setting.value)) {
+      setArrayItems(setting.value);
     }
-  }, [setting.default]);
+  }, [setting.value]);
 
   const handleArrayAdd = () => {
     if (arrayValue.trim()) {
@@ -38,14 +52,20 @@ export const SettingInput: React.FC<SettingInputProps> = ({ setting, onChange })
         <Field>
           <div className="flex items-center">
             <Switch
-              checked={setting.default}
+              checked={setting.value}
               onChange={checked => onChange(setting.id, checked)}
+              disabled={toggleStates[setting.tag]}
               className={`${
-                setting.default ? 'bg-secondary' : 'bg-gray-200'
-              } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2`}>
+                setting.value ? 'bg-secondary' : 'bg-gray-300'
+              } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2
+              ${
+                toggleStates[setting.tag] // Check if disabled
+                  ? 'opacity-50 cursor-not-allowed' // Apply opacity and cursor for disabled state
+                  : ''
+              }`}>
               <span
                 className={`${
-                  setting.default ? 'translate-x-6' : 'translate-x-1'
+                  setting.value ? 'translate-x-6' : 'translate-x-1'
                 } inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
               />
             </Switch>
@@ -62,7 +82,7 @@ export const SettingInput: React.FC<SettingInputProps> = ({ setting, onChange })
           <Input
             type="number"
             id={setting.id}
-            value={setting.default}
+            value={setting.value}
             min={setting.min}
             max={setting.max}
             onChange={e => onChange(setting.id, parseInt(e.target.value))}
@@ -109,7 +129,7 @@ export const SettingInput: React.FC<SettingInputProps> = ({ setting, onChange })
           </label>
           <Select
             id={setting.id}
-            value={setting.default}
+            value={setting.value}
             onChange={e => onChange(setting.id, e.target.value)}
             className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary sm:text-sm rounded-md shadow-sm bg-primary text-font">
             {setting.options.map((option: any) => (

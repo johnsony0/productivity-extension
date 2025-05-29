@@ -49,8 +49,11 @@ export const instaConfigs = {
         'ig-pagesstories-toggle': { selector: '[role="menu"]', type: 'attribute', parents: 0 },
       },
     },
+    Posts: {
+      url: '',
+      deleteElement: {},
+    },
   },
-
   onPost: {
     hideElements: {},
     hideElement: {

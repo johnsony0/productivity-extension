@@ -20,6 +20,7 @@ export const PlatformSelector: React.FC<PlatformSelectorProps> = ({ onPlatformCh
         <option value="facebook">Facebook</option>
         <option value="instagram">Instagram</option>
         <option value="twitter">Twitter</option>
+        <option value="youtube">Youtube</option>
       </Select>
     </div>
   );

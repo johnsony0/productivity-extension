@@ -64,6 +64,10 @@ export const twitterConfigs = {
         'x-media-toggle': { selector: 'Media', type: 'text', parents: 4 },
       },
     },
+    Posts: {
+      url: '',
+      deleteElement: {},
+    },
   },
   onPost: {
     hideElements: {},

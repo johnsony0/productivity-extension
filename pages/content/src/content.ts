@@ -5,6 +5,7 @@ import { waitForElm, hideElement, hideElements, deleteElement, hideVideosPhotos,
 import { facebookConfigs } from '@extension/storage';
 import { instaConfigs } from '@extension/storage';
 import { twitterConfigs } from '@extension/storage';
+import { youtubeConfigs } from '@extension/storage';
 
 // Define types for settings and configs
 interface FindElementInput {
@@ -37,6 +38,10 @@ type PlatformConfig = {
       deleteElement: { [key: string]: FindElementInput | FindElementInput[] };
     };
     Pages: {
+      url: string;
+      deleteElement: { [key: string]: FindElementInput | FindElementInput[] };
+    };
+    Posts: {
       url: string;
       deleteElement: { [key: string]: FindElementInput | FindElementInput[] };
     };
@@ -100,41 +105,57 @@ const filterPost = async (
     }
   });
 
-  const topic_prediction = await runTopicModel(text);
-  const topic_data = {
-    tech: Math.round(topic_prediction[0] * 100),
-    sports: Math.round(topic_prediction[1] * 100),
-    politics: Math.round(topic_prediction[2] * 100),
-    gaming: Math.round(topic_prediction[3] * 100),
-    food: Math.round(topic_prediction[4] * 100),
-    business: Math.round(topic_prediction[5] * 100),
-  };
-  const bias = Object.keys(topic_data).reduce((a, b) =>
-    topic_data[a as keyof typeof topic_data] > topic_data[b as keyof typeof topic_data] ? a : b,
-  );
-  console.log(text, topic_data, bias);
-
-  // ML pipeline for bias detection
-  if (bias == 'politics' && !dropdownCreated && messageContainer) {
-    const bias_prediction = await runBiasModel(text);
-    const bias_data = {
-      left: Math.round(bias_prediction[0] * 100),
-      center: Math.round(bias_prediction[2] * 100),
-      right: Math.round(bias_prediction[1] * 100),
+  if (!dropdownCreated && messageContainer && !settings['ai']) {
+    // ML pipeline for topic classification
+    const topic_prediction = await runTopicModel(text);
+    const topic_data = {
+      tech: Math.round(topic_prediction[0] * 100),
+      sports: Math.round(topic_prediction[1] * 100),
+      politics: Math.round(topic_prediction[2] * 100),
+      gaming: Math.round(topic_prediction[3] * 100),
+      food: Math.round(topic_prediction[4] * 100),
+      business: Math.round(topic_prediction[5] * 100),
     };
-    const bias = Object.keys(bias_data).reduce((a, b) =>
-      bias_data[a as keyof typeof bias_data] > bias_data[b as keyof typeof bias_data] ? a : b,
+    const bias = Object.keys(topic_data).reduce((a, b) =>
+      topic_data[a as keyof typeof topic_data] > topic_data[b as keyof typeof topic_data] ? a : b,
     );
-    createDataBars(bias_data, postContainer);
 
-    const biasThresholdExceeded =
-      (bias === 'left' && settings['enable-left'] && bias_data['left'] > settings['bias-threshold']) ||
-      (bias === 'right' && settings['enable-right'] && bias_data['right'] > settings['bias-threshold']) ||
-      (bias === 'center' && settings['enable-center'] && bias_data['center'] > settings['bias-threshold']);
-    if (settings['bias-filter-visibility'] === 'hide' && biasThresholdExceeded) {
+    const topicThresholdExceeded =
+      (bias === 'tech' && settings['enable-tech'] && topic_data['tech'] > settings['topic-threshold']) ||
+      (bias === 'sports' && settings['enable-sports'] && topic_data['sports'] > settings['topic-threshold']) ||
+      (bias === 'politics' && settings['enable-politics'] && topic_data['politics'] > settings['topic-threshold']) ||
+      (bias === 'gaming' && settings['enable-gaming'] && topic_data['gaming'] > settings['topic-threshold']) ||
+      (bias === 'food' && settings['enable-food'] && topic_data['food'] > settings['topic-threshold']) ||
+      (bias === 'business' && settings['enable-business'] && topic_data['business'] > settings['topic-threshold']);
+    if (settings['topic-filter-visibility'] === 'hide' && topicThresholdExceeded) {
       postContainer.style.display = 'none';
-    } else if (settings['bias-filter-visibility'] === 'min' && biasThresholdExceeded) {
-      createDropdown(`Biased towards ${bias} at ${bias_data[bias]}%`, postContainer);
+    } else if (settings['topic-filter-visibility'] === 'min' && topicThresholdExceeded) {
+      createDropdown(`Biased towards ${bias} at ${topic_data[bias]}%`, postContainer);
+      dropdownCreated = true;
+    }
+
+    // ML pipeline for bias detection
+    if (bias == 'politics' && !dropdownCreated) {
+      const bias_prediction = await runBiasModel(text);
+      const bias_data = {
+        left: Math.round(bias_prediction[0] * 100),
+        center: Math.round(bias_prediction[2] * 100),
+        right: Math.round(bias_prediction[1] * 100),
+      };
+      const bias = Object.keys(bias_data).reduce((a, b) =>
+        bias_data[a as keyof typeof bias_data] > bias_data[b as keyof typeof bias_data] ? a : b,
+      );
+      createDataBars(bias_data, postContainer);
+
+      const biasThresholdExceeded =
+        (bias === 'left' && settings['enable-left'] && bias_data['left'] > settings['bias-threshold']) ||
+        (bias === 'right' && settings['enable-right'] && bias_data['right'] > settings['bias-threshold']) ||
+        (bias === 'center' && settings['enable-center'] && bias_data['center'] > settings['bias-threshold']);
+      if (settings['bias-filter-visibility'] === 'hide' && biasThresholdExceeded) {
+        postContainer.style.display = 'none';
+      } else if (settings['bias-filter-visibility'] === 'min' && biasThresholdExceeded) {
+        createDropdown(`Biased towards ${bias} at ${bias_data[bias]}%`, postContainer);
+      }
     }
   }
 };
@@ -197,7 +218,9 @@ const filterPage = (configs: PlatformConfig, settings: Settings) => {
   // Hide initial elements
   for (const [functionName, filters] of Object.entries(configs.onPost || {})) {
     for (const [filterKey, filterData] of Object.entries(filters)) {
-      if (settings[filterKey]) deleteElement(filterData, document);
+      if (settings[filterKey]) {
+        deleteElement(filterData, document);
+      }
     }
   }
 
@@ -273,6 +296,7 @@ const handleURLChange = () => {
   initModel();
   const url = window.location.hostname + window.location.pathname;
   chrome.storage.sync.get(null, settings => {
+    console.log(settings);
     let temp = {};
     temp = { ...temp, ...settings['extension'] };
     temp = { ...temp, ...settings['quick-settings'] };
@@ -292,6 +316,11 @@ const handleURLChange = () => {
       console.log('Observing Twitter posts...', temp);
       filterPage(twitterConfigs, temp);
       setupObserver(twitterConfigs, temp);
+    } else if (url.includes('youtube.com')) {
+      temp = { ...temp, ...settings['youtube'] };
+      console.log('Observing Youtube videos...', temp);
+      filterPage(youtubeConfigs, temp);
+      setupObserver(youtubeConfigs, temp);
     } else {
       console.log('This script does not apply to this site.');
     }
