@@ -22,7 +22,8 @@ export const facebookConfigs = {
   },
   onOpen: {
     General: {
-      deleteElement: {
+      url: '_',
+      hideElement: {
         'fb-messengeroverlay-toggle': { selector: '[aria-label="New message"]', type: 'attribute', parents: 4 },
         'fb-stories-toggle': { selector: '[aria-label="Stories"]', type: 'attribute', parents: 0 },
         'postings-toggle': [
@@ -32,7 +33,8 @@ export const facebookConfigs = {
       },
     },
     Navigation: {
-      deleteElement: {
+      url: '_',
+      hideElement: {
         'fb-search-toggle': { selector: '[aria-label="Search Facebook"]', type: 'attribute', parents: 1 },
         'fb-profile-toggle': {
           selector: `x1i10hfl x1qjc9v5 xjbqb8w xjqpnuy xa49m3k xqeqjp1 x2hbi6w x13fuv20 xu3j5b3 x1q0q8m5 x26u7qi x972fbf xcfux6l x1qhh985 xm0m39n x9f619 x1ypdohk xdl72j9 x2lah0s xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r x2lwn1j xeuugli xexx8yu x4uap5 x18d9i69 xkhd6sd x1n2onr6 x16tdsg8 x1hl2dhg xggy1nq x1ja2u2z x1t137rt x1q0g3np x87ps6o x1lku1pv x1a2a7pz x1lq5wgf xgqcy7u x30kzoy x9jhf4c x1lliihq`,
@@ -51,7 +53,7 @@ export const facebookConfigs = {
     },
     Home: {
       url: '/',
-      deleteElement: {
+      hideElement: {
         'fb-homeposts-toggle': { selector: 'News Feed posts', type: 'text', parents: 1 },
         'fb-homeshortcuts-toggle': {
           selector: 'x9f619 x1n2onr6 x1ja2u2z x78zum5 xdt5ytf xedcshv x1t2pt76',
@@ -64,7 +66,7 @@ export const facebookConfigs = {
     },
     Pages: {
       url: '/*',
-      deleteElement: {
+      hideElement: {
         'fb-pagesposts-toggle': {
           selector:
             'x9f619 x1n2onr6 x1ja2u2z xeuugli xs83m0k xjl7jj x1xmf6yo x1emribx x1e56ztr x1i64zmx x19h7ccj xu9j1y6 x7ep2pv',
@@ -79,7 +81,7 @@ export const facebookConfigs = {
     },
     Posts: {
       url: '',
-      deleteElement: {},
+      hideElement: {},
     },
   },
   onPost: {

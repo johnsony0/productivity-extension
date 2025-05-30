@@ -9,12 +9,14 @@ export const instaConfigs = {
   },
   onOpen: {
     General: {
-      deleteElement: {
+      url: '_',
+      hideElement: {
         'postings-toggle': { selector: '[aria-label="New post"]', type: 'attribute', parents: 8 },
       },
     },
     Navigation: {
-      deleteElement: {
+      url: '_',
+      hideElement: {
         'ig-home-toggle': { selector: '[aria-label="Home"]', type: 'attribute', parents: 8 },
         'ig-video-toggle': { selector: '[aria-label="Reels"]', type: 'attribute', parents: 8 },
         'ig-messages-toggle': { selector: '[aria-label="Direct"]', type: 'attribute', parents: 8 },
@@ -26,7 +28,7 @@ export const instaConfigs = {
     },
     Home: {
       url: '/',
-      deleteElement: {
+      hideElement: {
         'ig-posts-toggle': {
           selector:
             'x9f619 xjbqb8w x78zum5 x168nmei x13lgxp2 x5pf9jr xo71vjh x1uhb9sk x1plvlek xryxfnj x1c4vz4f x2lah0s xdt5ytf xqjyukv x1qjc9v5 x1oa3qoh x1nhvcw1',
@@ -39,7 +41,7 @@ export const instaConfigs = {
     },
     Pages: {
       url: '/*',
-      deleteElement: {
+      hideElement: {
         'ig-pagesposts-toggle': [
           { selector: 'Posts', type: 'text', parents: 1 },
           { selector: '_ac7v x1f01sob xcghwft xat24cr xzboxd6', type: 'class', parents: 1 },
@@ -51,7 +53,7 @@ export const instaConfigs = {
     },
     Posts: {
       url: '',
-      deleteElement: {},
+      hideElement: {},
     },
   },
   onPost: {

@@ -38,6 +38,8 @@ export const findElement = (node: ParentNode, input: FindElementInput): HTMLElem
           (child: ChildNode) => child.nodeType === Node.TEXT_NODE && child.nodeValue?.trim() === input.selector,
         ),
       ) || null;
+  } else if (input.type === 'id') {
+    element = document.getElementById(input.selector);
   }
 
   let currentElement: ParentNode | Element | null = element;
@@ -71,6 +73,8 @@ const findElements = (node: ParentNode, input: FindElementInput): HTMLElement[] 
 
 export function waitForElm(node: ParentNode | Document, input: FindElementInput): Promise<HTMLElement | null> {
   return new Promise(resolve => {
+    let timeoutId: ReturnType<typeof setTimeout>;
+
     const elm = findElement(node, input);
     if (elm) {
       return resolve(elm);
@@ -78,10 +82,17 @@ export function waitForElm(node: ParentNode | Document, input: FindElementInput)
     const observer = new MutationObserver(() => {
       const elm = findElement(node, input);
       if (elm) {
+        clearTimeout(timeoutId);
         observer.disconnect();
         resolve(elm);
       }
     });
+
+    timeoutId = setTimeout(() => {
+      observer.disconnect();
+      resolve(null);
+    }, 5000);
+
     observer.observe(node instanceof Node ? node : document, {
       childList: true,
       subtree: true,
@@ -102,6 +113,7 @@ export const hideElement = (elements: FindElementInput | FindElementInput[], nod
 
 export const hideElements = (elements: FindElementInput | FindElementInput[], node?: ParentNode | Document): void => {
   const inputs: FindElementInput[] = Array.isArray(elements) ? elements : [elements];
+  console.log(inputs);
   inputs.forEach(input => {
     const elements = findElements(node || document, input);
     elements?.forEach(elm => {
@@ -117,6 +129,7 @@ export const deleteElement = (elements: FindElementInput | FindElementInput[], n
   inputs.forEach(input => {
     waitForElm(node || document, input).then(elm => {
       if (elm) {
+        console.log(elm);
         elm.remove();
       }
     });

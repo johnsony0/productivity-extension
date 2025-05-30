@@ -28,22 +28,24 @@ type PlatformConfig = {
   };
   onOpen: {
     General: {
-      deleteElement: { [key: string]: FindElementInput | FindElementInput[] };
+      url: string;
+      hideElement: { [key: string]: FindElementInput | FindElementInput[] };
     };
     Navigation: {
-      deleteElement: { [key: string]: FindElementInput | FindElementInput[] };
+      url: string;
+      hideElement: { [key: string]: FindElementInput | FindElementInput[] };
     };
     Home: {
       url: string;
-      deleteElement: { [key: string]: FindElementInput | FindElementInput[] };
+      hideElement: { [key: string]: FindElementInput | FindElementInput[] };
     };
     Pages: {
       url: string;
-      deleteElement: { [key: string]: FindElementInput | FindElementInput[] };
+      hideElement: { [key: string]: FindElementInput | FindElementInput[] };
     };
     Posts: {
       url: string;
-      deleteElement: { [key: string]: FindElementInput | FindElementInput[] };
+      hideElement: { [key: string]: FindElementInput | FindElementInput[] };
     };
   };
   onPost: {
@@ -161,8 +163,6 @@ const filterPost = async (
 };
 
 const filterPage = (configs: PlatformConfig, settings: Settings) => {
-  // Timeout if enabled
-  //createTimeout(settings.others.createTimeout['fb-timeout'].text,settings.others.createTimeout['fb-timeout']);
   // Limit scroll if enabled
   if (settings['scroll-limit']) {
     // artifical default scroll_limit given
@@ -219,37 +219,47 @@ const filterPage = (configs: PlatformConfig, settings: Settings) => {
   for (const [functionName, filters] of Object.entries(configs.onPost || {})) {
     for (const [filterKey, filterData] of Object.entries(filters)) {
       if (settings[filterKey]) {
-        deleteElement(filterData, document);
+        switch (functionName) {
+          case 'hideElement':
+            hideElement(filterData, document);
+            break;
+          case 'hideElements':
+            hideElements(filterData, document);
+            break;
+        }
       }
     }
   }
 
+  //page specific hides
   const currentUrl = window.location.pathname;
-  const exemptPages = settings[configs.others.exempt] || [];
-  if (!exemptPages.includes(currentUrl)) {
-    // Hide or manage elements based on settings and URL
-    for (const [category, functions] of Object.entries(configs.onOpen || {})) {
-      // if correct url and not exempt, then filter
-      for (const [functionName, functionData] of Object.entries(functions)) {
-        for (const [filterKey, filterData] of Object.entries(functionData)) {
-          if (!settings[filterKey]) continue;
-          switch (functionName) {
-            case 'hideElement':
-              hideElement(filterData);
-              break;
-            case 'deleteElement':
-              deleteElement(filterData);
-              break;
-            default:
-              console.warn(`Unknown function: ${functionName}`);
-          }
+  for (const [category, functions] of Object.entries(configs.onOpen || {})) {
+    // if url is incorrect and not _ we skip
+    if (!currentUrl.startsWith(functions.url) && functions.url != '_') {
+      continue;
+    }
+    for (const [functionName, functionData] of Object.entries(functions)) {
+      for (const [filterKey, filterData] of Object.entries(functionData)) {
+        if (!settings[filterKey]) continue;
+        switch (functionName) {
+          case 'hideElement':
+            hideElement(filterData);
+            break;
+          case 'deleteElement':
+            deleteElement(filterData);
+            break;
+          case 'hideElements':
+            hideElements(filterData);
+            break;
+          default:
+            console.warn(`Unknown function: ${functionName}`);
         }
       }
-
-      if (settings[configs.others.createTimeout.selector]) {
-        createTimeout(configs.others.createTimeout.text, settings[configs.others.createTimeout.selector]);
-      }
     }
+  }
+
+  if (settings[configs.others.createTimeout.selector]) {
+    createTimeout(configs.others.createTimeout.text, settings[configs.others.createTimeout.selector]);
   }
 };
 
@@ -269,7 +279,7 @@ const setupObserver = (platformConfig: PlatformConfig, settings: Settings) => {
       console.warn('Main container not found for this platform.');
       return;
     }
-
+    console.log(mainContainer);
     // Process initial posts after mainContainer is found
     const initialPosts = document.querySelectorAll(platformConfig.postContainer.selector);
     initialPosts.forEach(postContainer => processPost(platformConfig, settings, postContainer as HTMLElement));
@@ -280,6 +290,7 @@ const setupObserver = (platformConfig: PlatformConfig, settings: Settings) => {
         mutation.addedNodes.forEach(node => {
           if (node instanceof Element) {
             const postContainer = findElement(node, platformConfig.postContainer);
+            console.log(postContainer);
             if (postContainer && !postContainer.dataset.processed) {
               postContainer.dataset.processed = 'true';
               processPost(platformConfig, settings, postContainer);
@@ -295,32 +306,47 @@ const setupObserver = (platformConfig: PlatformConfig, settings: Settings) => {
 const handleURLChange = () => {
   initModel();
   const url = window.location.hostname + window.location.pathname;
+  const currentUrl = window.location.pathname;
   chrome.storage.sync.get(null, settings => {
     console.log(settings);
     let temp = {};
     temp = { ...temp, ...settings['extension'] };
     temp = { ...temp, ...settings['quick-settings'] };
     temp = { ...temp, ...settings['toggleStates'] };
+
+    // Hide or manage elements based on settings and URL
     if (url.includes('facebook.com')) {
       temp = { ...temp, ...settings['facebook'] };
       console.log('Observing Facebook posts...', temp);
-      filterPage(facebookConfigs, temp);
-      setupObserver(facebookConfigs, temp);
+      const exemptPages = settings[facebookConfigs.others.exempt] || [];
+      if (!exemptPages.includes(currentUrl)) {
+        filterPage(facebookConfigs, temp);
+        setupObserver(facebookConfigs, temp);
+      }
     } else if (url.includes('instagram.com')) {
       temp = { ...temp, ...settings['instagram'] };
       console.log('Observing Instagram posts...', temp);
-      filterPage(instaConfigs, temp);
-      setupObserver(instaConfigs, temp);
+      const exemptPages = settings[instaConfigs.others.exempt] || [];
+      if (!exemptPages.includes(currentUrl)) {
+        filterPage(instaConfigs, temp);
+        setupObserver(instaConfigs, temp);
+      }
     } else if (url.includes('x.com')) {
       temp = { ...temp, ...settings['twitter'] };
       console.log('Observing Twitter posts...', temp);
-      filterPage(twitterConfigs, temp);
-      setupObserver(twitterConfigs, temp);
+      const exemptPages = settings[twitterConfigs.others.exempt] || [];
+      if (!exemptPages.includes(currentUrl)) {
+        filterPage(twitterConfigs, temp);
+        setupObserver(twitterConfigs, temp);
+      }
     } else if (url.includes('youtube.com')) {
       temp = { ...temp, ...settings['youtube'] };
       console.log('Observing Youtube videos...', temp);
-      filterPage(youtubeConfigs, temp);
-      setupObserver(youtubeConfigs, temp);
+      const exemptPages = settings[youtubeConfigs.others.exempt] || [];
+      if (!exemptPages.includes(currentUrl)) {
+        filterPage(youtubeConfigs, temp);
+        setupObserver(youtubeConfigs, temp);
+      }
     } else {
       console.log('This script does not apply to this site.');
     }

@@ -9,7 +9,8 @@ export const twitterConfigs = {
   },
   onOpen: {
     General: {
-      deleteElement: {
+      url: '_',
+      hideElement: {
         'postings-toggle': [
           { selector: '[data-testid="toolBar"]', type: 'attribute', parents: 11 },
           { selector: '[aria-label="Post"]', type: 'attribute', parents: 0 },
@@ -17,7 +18,8 @@ export const twitterConfigs = {
       },
     },
     Navigation: {
-      deleteElement: {
+      url: '_',
+      hideElement: {
         'x-home-toggle': { selector: '[aria-label="Home"]', type: 'attribute', parents: 0 },
         'x-search-toggle': [
           { selector: '[aria-label="Search and explore"]', type: 'attribute', parents: 0 },
@@ -35,15 +37,13 @@ export const twitterConfigs = {
         'x-business-toggle': { selector: '[aria-label="Business"]', type: 'attribute', parents: 0 },
         'x-profile-toggle': { selector: '[aria-label="Profile"]', type: 'attribute', parents: 0 },
         'x-menu-toggle': { selector: '[aria-label="More menu items"]', type: 'attribute', parents: 0 },
-      },
-      hideElement: {
         'x-list-toggle': { selector: '[aria-label="Lists"]', type: 'attribute', parents: 0 },
         'x-bookmark-toggle': { selector: '[aria-label="Bookmarks"]', type: 'attribute', parents: 0 },
       },
     },
     Home: {
       url: '/home',
-      deleteElement: {
+      hideElement: {
         'x-homeposts-toggle': { selector: '[role="region"]', type: 'attribute', parents: 0 },
         'x-foryou-toggle': { selector: 'For you', type: 'text', parents: 4 },
         'x-following-toggle': { selector: 'Following', type: 'text', parents: 4 },
@@ -53,7 +53,7 @@ export const twitterConfigs = {
     },
     Pages: {
       url: '/*',
-      deleteElement: {
+      hideElement: {
         'x-pagesposts-toggle': [
           { selector: '[role="region"]', type: 'attribute', parents: 0 },
           { selector: 'Posts', type: 'text', parents: 4 },
@@ -66,7 +66,7 @@ export const twitterConfigs = {
     },
     Posts: {
       url: '',
-      deleteElement: {},
+      hideElement: {},
     },
   },
   onPost: {
