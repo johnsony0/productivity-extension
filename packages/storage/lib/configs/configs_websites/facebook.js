@@ -65,7 +65,7 @@ export const facebookConfigs = {
       },
     },
     Pages: {
-      url: '/*',
+      url: '/',
       hideElement: {
         'fb-pagesposts-toggle': {
           selector:
@@ -75,13 +75,18 @@ export const facebookConfigs = {
         },
         'fb-pageshortcuts-toggle': { selector: '[role="tablist"]', type: 'attribute', parents: 0 },
         'fb-intro-toggle': { selector: 'Intro', type: 'text', parents: 11 },
-        'fb-recent-toggle': { selector: 'Recent media', type: 'text', parents: 11 },
         'fb-photos-toggle': { selector: 'See all photos', type: 'text', parents: 16 },
       },
     },
-    Posts: {
-      url: '',
-      hideElement: {},
+    Extras: {
+      url: '/groups',
+      hideElement: {
+        'fb-groupsposts-toggle': { selector: '[role="feed"]', type: 'attribute', parents: 0 },
+        'fb-groupshortcuts-toggle': { selector: '[role="tablist"]', type: 'attribute', parents: 0 },
+        'fb-about-toggle': { selector: 'About', type: 'text', parents: 11 },
+        'fb-recentmedia-toggle': { selector: 'Recent media', type: 'text', parents: 11 },
+        'fb-featured-toggle': { selector: '[role="tablist"]', type: 'attribute', parents: 7 },
+      },
     },
   },
   onPost: {

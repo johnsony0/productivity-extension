@@ -1,64 +1,137 @@
-import '@src/Popup.css';
-import { useStorage, withErrorBoundary, withSuspense } from '@extension/shared';
-import { exampleThemeStorage } from '@extension/storage';
-import { t } from '@extension/i18n';
-import { ToggleButton } from '@extension/ui';
+import React, { useState, useEffect } from 'react';
+import { PlatformSelector, CategorySection, QuickSettings } from '@extension/ui';
+import {
+  extensionSettings,
+  facebookSettings,
+  instagramSettings,
+  twitterSettings,
+  youtubeSettings,
+} from '@extension/storage';
+import { Switch, Label, Field } from '@headlessui/react';
+import { Toast } from '@extension/ui';
 
-const notificationOptions = {
-  type: 'basic',
-  iconUrl: chrome.runtime.getURL('icon-34.png'),
-  title: 'Injecting content script error',
-  message: 'You cannot inject script here!',
-} as const;
+export const Popup: React.FC = () => {
+  const [platform, setPlatform] = useState('quick-settings'); // Default to "Quick Settings"
+  const [settings, setSettings] = useState<Record<string, any>>({});
+  const [darkMode, setDarkMode] = useState(false);
+  const [showToast, setShowToast] = useState(false);
 
-const Popup = () => {
-  const theme = useStorage(exampleThemeStorage);
-  const isLight = theme === 'light';
-  const logo = isLight ? 'popup/logo_vertical.svg' : 'popup/logo_vertical_dark.svg';
-  const goGithubSite = () =>
-    chrome.tabs.create({ url: 'https://github.com/Jonghakseo/chrome-extension-boilerplate-react-vite' });
+  // Helper function to flatten settings into id: value pairs
+  const flattenSettings = (settings: any) => {
+    const flattened: Record<string, any> = {};
+    Object.keys(settings).forEach(category => {
+      settings[category].forEach((setting: any) => {
+        flattened[setting.id] = setting.default;
+      });
+    });
+    return flattened;
+  };
 
-  const injectContentScript = async () => {
-    const [tab] = await chrome.tabs.query({ currentWindow: true, active: true });
+  // Load saved settings and dark mode preference on initial load
+  useEffect(() => {
+    // Load dark mode preference from chrome.storage.sync
+    chrome.storage.sync.get(['darkMode'], result => {
+      setDarkMode(result.darkMode ?? false); // Default to false if not set
+    });
 
-    if (tab.url!.startsWith('about:') || tab.url!.startsWith('chrome:')) {
-      chrome.notifications.create('inject-error', notificationOptions);
+    // Load platform-specific settings (skip for quick-settings)
+    if (platform === 'quick-settings') return;
+    chrome.storage.sync.get([platform], result => {
+      const defaultSettings = getDefaultSettings(platform);
+      const flattenedSettings = result[platform] || flattenSettings(defaultSettings);
+      setSettings(flattenedSettings);
+    });
+  }, [platform]);
+
+  // Apply dark mode class to the <html> element and save preference when darkMode changes
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add('dark-theme');
+      document.documentElement.classList.remove('light-theme');
+    } else {
+      document.documentElement.classList.add('light-theme');
+      document.documentElement.classList.remove('dark-theme');
+    }
+    // Save dark mode preference to chrome.storage.sync
+    chrome.storage.sync.set({ darkMode });
+  }, [darkMode]);
+
+  const getDefaultSettings = (platform: string) => {
+    switch (platform) {
+      case 'extension':
+        return extensionSettings;
+      case 'facebook':
+        return facebookSettings;
+      case 'instagram':
+        return instagramSettings;
+      case 'twitter':
+        return twitterSettings;
+      case 'youtube':
+        return youtubeSettings;
+      default:
+        console.warn(`Unsupported platform: ${platform}`);
+        return {};
+    }
+  };
+
+  const handleSettingChange = (id: string, value: any) => {
+    const updatedSettings = { ...settings, [id]: value };
+    setSettings(updatedSettings);
+
+    // Save updated settings to chrome.storage.sync
+    chrome.storage.sync.set({ [platform]: updatedSettings });
+    chrome.storage.sync.get(null, result => {
+      console.log(result);
+    });
+    setShowToast(true);
+  };
+
+  const renderSettings = () => {
+    if (platform === 'quick-settings') {
+      return <QuickSettings onSettingsChange={setShowToast} mode={0} />;
     }
 
-    await chrome.scripting
-      .executeScript({
-        target: { tabId: tab.id! },
-        files: ['/content-runtime/index.iife.js'],
-      })
-      .catch(err => {
-        // Handling errors related to other paths
-        if (err.message.includes('Cannot access a chrome:// URL')) {
-          chrome.notifications.create('inject-error', notificationOptions);
-        }
-      });
+    const platformSettings = getDefaultSettings(platform) as Record<string, any>;
+    return Object.keys(platformSettings).map(category => (
+      <CategorySection
+        key={category}
+        category={category}
+        settings={platformSettings[category]}
+        currentSettings={settings}
+        onChange={handleSettingChange}
+        mode={0}
+      />
+    ));
   };
 
   return (
-    <div className={`App ${isLight ? 'bg-slate-50' : 'bg-gray-800'}`}>
-      <header className={`App-header ${isLight ? 'text-gray-900' : 'text-gray-100'}`}>
-        <button onClick={goGithubSite}>
-          <img src={chrome.runtime.getURL(logo)} className="App-logo" alt="logo" />
-        </button>
-        <p>
-          Edit <code>pages/popup/src/Popup.tsx</code>
-        </p>
-        <button
-          className={
-            'font-bold mt-4 py-1 px-4 rounded shadow hover:scale-105 ' +
-            (isLight ? 'bg-blue-200 text-black' : 'bg-gray-700 text-white')
-          }
-          onClick={injectContentScript}>
-          Click to inject Content Script
-        </button>
-        <ToggleButton>{t('toggleTheme')}</ToggleButton>
-      </header>
+    <div className="min-h-screen flex flex-col justify-center bg-bg text-font p-4">
+      <PlatformSelector onPlatformChange={setPlatform} mode={0} />
+      <div className="flex justify-between mb-1">
+        <Field>
+          <div className="flex items-center ">
+            <Switch
+              checked={darkMode}
+              onChange={setDarkMode}
+              className={`${
+                darkMode ? 'bg-secondary' : 'bg-gray-200'
+              } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2`}>
+              <span
+                className={`${
+                  darkMode ? 'translate-x-6' : 'translate-x-1'
+                } inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
+              />
+            </Switch>
+            <Label className="ml-2 text-sm text-heading">Dark Mode</Label>
+          </div>
+        </Field>
+      </div>
+      {renderSettings()}
+      {showToast && (
+        <Toast message="Settings updated successfully!" duration={3000} onClose={() => setShowToast(false)} />
+      )}
     </div>
   );
 };
 
-export default withErrorBoundary(withSuspense(Popup, <div> Loading ... </div>), <div> Error Occur </div>);
+//export default withErrorBoundary(withSuspense(Popup, <div> Loading ... </div>), <div> Error Occur </div>);

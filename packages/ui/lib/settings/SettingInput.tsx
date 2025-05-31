@@ -4,9 +4,10 @@ import { Button, Input, Field, Label, Switch, Select } from '@headlessui/react';
 interface SettingInputProps {
   setting: any;
   onChange: (id: string, value: any) => void;
+  mode: number;
 }
 
-export const SettingInput: React.FC<SettingInputProps> = ({ setting, onChange }) => {
+export const SettingInput: React.FC<SettingInputProps> = ({ setting, onChange, mode }) => {
   const [arrayValue, setArrayValue] = useState<string>('');
   const [arrayItems, setArrayItems] = useState<string[]>(setting.value || []);
   const [toggleStates, setToggleStates] = useState<Record<string, boolean>>({

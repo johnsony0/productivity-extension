@@ -43,7 +43,7 @@ type PlatformConfig = {
       url: string;
       hideElement: { [key: string]: FindElementInput | FindElementInput[] };
     };
-    Posts: {
+    Extras: {
       url: string;
       hideElement: { [key: string]: FindElementInput | FindElementInput[] };
     };
@@ -169,7 +169,6 @@ const filterPage = (configs: PlatformConfig, settings: Settings) => {
     const SCROLL_LIMIT = 10000;
     function preventScrollBeyondLimit() {
       const scrollTop = window.scrollY || document.documentElement.scrollTop;
-
       if (scrollTop > SCROLL_LIMIT) {
         window.scrollTo(0, SCROLL_LIMIT); // Keep the user at the limit
       }
@@ -204,15 +203,14 @@ const filterPage = (configs: PlatformConfig, settings: Settings) => {
     }
   });
 
+  // Handle greysccale
+  if (settings['grayscale-toggle']) {
+    document.body.style.filter = 'grayscale(100%)';
+  }
+
   // Handle navigation
   if (settings['navs-toggle']) {
-    const styleElement = document.createElement('style');
-    styleElement.textContent = `
-      a {
-        pointer-events: none;
-      }
-    `;
-    document.head.appendChild(styleElement);
+    document.body.style.pointerEvents = 'none';
   }
 
   // Hide initial elements
@@ -290,7 +288,6 @@ const setupObserver = (platformConfig: PlatformConfig, settings: Settings) => {
         mutation.addedNodes.forEach(node => {
           if (node instanceof Element) {
             const postContainer = findElement(node, platformConfig.postContainer);
-            console.log(postContainer);
             if (postContainer && !postContainer.dataset.processed) {
               postContainer.dataset.processed = 'true';
               processPost(platformConfig, settings, postContainer);

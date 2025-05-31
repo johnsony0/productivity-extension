@@ -57,7 +57,7 @@ export const youtubeConfigs = {
         'yt-search-toggle': { selector: '[aria-label="Search"]', type: ' attribute', parents: 0 },
       },
     },
-    Posts: {
+    Extras: {
       url: '/watch',
       hideElement: {
         'comments-toggle': [{ selector: '[section-identifier="comment-item-section"]', type: 'attribute', parents: 0 }],

@@ -88,7 +88,7 @@ export const Options: React.FC = () => {
 
   const renderSettings = () => {
     if (platform === 'quick-settings') {
-      return <QuickSettings onSettingsChange={setShowToast} />;
+      return <QuickSettings onSettingsChange={setShowToast} mode={1} />;
     }
 
     const platformSettings = getDefaultSettings(platform) as Record<string, any>;
@@ -99,6 +99,7 @@ export const Options: React.FC = () => {
         settings={platformSettings[category]}
         currentSettings={settings}
         onChange={handleSettingChange}
+        mode={1}
       />
     ));
   };
@@ -107,7 +108,7 @@ export const Options: React.FC = () => {
     <div className="min-h-screen flex items-center justify-center bg-bg text-font">
       <div className="w-[90%] lg:w-1/2 h-[90vh] bg-primary p-8 rounded-lg shadow-lg overflow-y-auto">
         <div className="flex justify-between items-center mb-6">
-          <PlatformSelector onPlatformChange={setPlatform} />
+          <PlatformSelector onPlatformChange={setPlatform} mode={1} />
           <Field>
             <div className="flex items-center">
               <Switch

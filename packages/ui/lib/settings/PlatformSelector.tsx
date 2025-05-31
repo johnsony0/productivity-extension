@@ -3,11 +3,12 @@ import { Select } from '@headlessui/react';
 
 interface PlatformSelectorProps {
   onPlatformChange: (platform: string) => void;
+  mode: number;
 }
 
-export const PlatformSelector: React.FC<PlatformSelectorProps> = ({ onPlatformChange }) => {
+export const PlatformSelector: React.FC<PlatformSelectorProps> = ({ onPlatformChange, mode }) => {
   return (
-    <div className="mb-8">
+    <div className={`${mode ? 'mb-8' : 'mb-1'}`}>
       <label htmlFor="platform" className="block text-lg font-bold">
         Select Platform
       </label>

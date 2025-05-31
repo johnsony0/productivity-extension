@@ -26,7 +26,8 @@ export const extensionSettings = {
       ],
     },
     { id: 'filtered-words', label: 'Word/Phrase Filter', type: 'array', default: [] },
-    { id: 'imagevideo-toggle', label: 'Hide Images/Videos', type: 'checkbox', default: false, rating: 5 },
+    { id: 'grayscale-toggle', label: 'Grayscale', type: 'checkbox', default: false, rating: 5 },
+    { id: 'imagevideo-toggle', label: 'Hide Images/Videos', type: 'checkbox', default: false, rating: 4 },
   ],
   Posts: [
     { id: 'limit-toggle', label: 'Limit Posts', type: 'checkbox', default: true, rating: 1 },

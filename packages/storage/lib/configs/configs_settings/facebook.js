@@ -49,8 +49,14 @@ export const facebookSettings = {
     { id: 'fb-pagesposts-toggle', label: 'Hide Posts', type: 'checkbox', default: false, rating: 5 },
     { id: 'fb-pageshortcuts-toggle', label: 'Hide Shortcuts', type: 'checkbox', default: true, rating: 3 },
     { id: 'fb-intro-toggle', label: 'Hide Intro', type: 'checkbox', default: true, rating: 3 },
-    { id: 'fb-recent-toggle', label: 'Hide Recent Medias', type: 'checkbox', default: true, rating: 3 },
     { id: 'fb-photos-toggle', label: 'Hide Recent Photos', type: 'checkbox', default: true, rating: 3 },
     { id: 'fb-pages-exempt', label: 'Pages Exempt', type: 'array', default: [] },
+  ],
+  Groups: [
+    { id: 'fb-groupsposts-toggle', label: 'Hide Posts', type: 'checkbox', default: true, rating: 3 },
+    { id: 'fb-groupshortcuts-toggle', label: 'Hide Guides', type: 'checkbox', default: true, rating: 3 },
+    { id: 'fb-about-toggle', label: 'Hide About', type: 'checkbox', default: true, rating: 3 },
+    { id: 'fb-recentmedia-toggle', label: 'Hide Recent Media', type: 'checkbox', default: true, rating: 3 },
+    { id: 'fb-featured-toggle', label: 'Hide Featured Media', type: 'checkbox', default: true, rating: 3 },
   ],
 };
