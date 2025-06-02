@@ -7,10 +7,10 @@ import {
   twitterSettings,
   youtubeSettings,
 } from '@extension/storage';
-import { Switch, Label, Field } from '@headlessui/react';
+import { Switch, Label, Field, Button } from '@headlessui/react';
 import { Toast } from '@extension/ui';
 
-export const Popup: React.FC = () => {
+const PopupSettings: React.FC = () => {
   const [platform, setPlatform] = useState('quick-settings'); // Default to "Quick Settings"
   const [settings, setSettings] = useState<Record<string, any>>({});
   const [darkMode, setDarkMode] = useState(false);
@@ -105,7 +105,7 @@ export const Popup: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center bg-bg text-font p-4">
+    <div className="min-h-screen flex flex-col bg-bg text-font p-4">
       <PlatformSelector onPlatformChange={setPlatform} mode={0} />
       <div className="flex justify-between mb-1">
         <Field>
@@ -134,4 +134,72 @@ export const Popup: React.FC = () => {
   );
 };
 
-//export default withErrorBoundary(withSuspense(Popup, <div> Loading ... </div>), <div> Error Occur </div>);
+const PopupStats: React.FC = () => {
+  return <h1>Stats</h1>;
+};
+
+export const Popup: React.FC = () => {
+  const [menu, setMenu] = useState('stats');
+
+  const StatsBarGraphIcon = (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="h-5 w-5"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round">
+      <line x1="12" y1="20" x2="12" y2="10"></line>
+      <line x1="18" y1="20" x2="18" y2="4"></line>
+      <line x1="6" y1="20" x2="6" y2="16"></line>
+      <line x1="4" y1="20" x2="20" y2="20"></line>
+    </svg>
+  );
+
+  const SettingsGearIcon = (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="h-5 w-5"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round">
+      <circle cx="12" cy="12" r="3"></circle>
+      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 5.4 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 5.4 8.6a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a2 2 0 0 1 2-2v-.09a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a2 2 0 0 1 2 2h.09a1.65 1.65 0 0 0 1.51 1 1.65 1.65 0 0 0 1.51 1.65z"></path>
+    </svg>
+  );
+
+  const baseButtonClasses =
+    'relative font-bold text-lg flex h-[50px] w-40 items-center justify-center overflow-hidden bg-white font-medium text-black transition-all duration-300 before:absolute before:inset-0 before:border-0 before:border-secondary before:duration-100 before:ease-linear hover:bg-secondary hover:text-black hover:shadow-black hover:before:border-[25px]';
+  const activeClasses = 'underline';
+  const inactiveClasses = 'no-underline';
+
+  return (
+    <div className="flex flex-col min-h-screen">
+      <div className="flex w-full ">
+        <Button
+          onClick={() => setMenu('stats')}
+          className={`${baseButtonClasses} ${menu === 'stats' ? activeClasses : inactiveClasses}`}>
+          <span className="flex items-center justify-center z-10">
+            {StatsBarGraphIcon}
+            Stats
+          </span>
+        </Button>
+        <Button
+          onClick={() => setMenu('settings')}
+          className={`${baseButtonClasses} ${menu === 'settings' ? activeClasses : inactiveClasses}`}>
+          <span className="flex items-center justify-center z-10">
+            {SettingsGearIcon}
+            Settings
+          </span>
+        </Button>
+      </div>
+      {menu === 'settings' && <PopupSettings />}
+      {menu === 'stats' && <PopupStats />}
+    </div>
+  );
+};

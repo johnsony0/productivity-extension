@@ -13,6 +13,12 @@ export const extensionSettings = {
     { id: 'navs-toggle', label: 'Disable Navigation', type: 'checkbox', default: false, rating: 5 },
     { id: 'scroll-limit', label: 'Limit Scrolling', type: 'checkbox', default: true, rating: 4 },
   ],
+  Sites: [
+    { id: 'facebook-toggle', label: 'Enable Facebook', type: 'checkbox', default: true, rating: 1 },
+    { id: 'instagram-toggle', label: 'Enable Instagram', type: 'checkbox', default: true, rating: 1 },
+    { id: 'twitter-toggle', label: 'Enable Twitter', type: 'checkbox', default: true, rating: 1 },
+    { id: 'youtube-toggle', label: 'Enable Youtube', type: 'checkbox', default: true, rating: 1 },
+  ],
   Content: [
     {
       id: 'content-filter-visibility',

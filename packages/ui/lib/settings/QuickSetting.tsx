@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { extensionSettings, facebookSettings, instagramSettings, twitterSettings } from '@extension/storage';
+import {
+  extensionSettings,
+  facebookSettings,
+  instagramSettings,
+  twitterSettings,
+  youtubeSettings,
+} from '@extension/storage';
 
 interface QuickSettingsProps {
   onSettingsChange: (showToast: boolean) => void;
@@ -33,6 +39,7 @@ export const QuickSettings: React.FC<QuickSettingsProps> = ({ onSettingsChange, 
       facebook: facebookSettings,
       instagram: instagramSettings,
       twitter: twitterSettings,
+      youtube: youtubeSettings,
     };
   };
 
@@ -179,22 +186,22 @@ export const QuickSettings: React.FC<QuickSettingsProps> = ({ onSettingsChange, 
           <Choice
             key="messages"
             tag="messages"
-            path={<path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />}
-            name="Enable Search"
+            path={
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
+              />
+            }
+            name="Enable Messages"
             toggleStates={toggleStates}
             handleToggleTag={handleToggleTag}
           />
           <Choice
             key="search"
             tag="search"
-            path={
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"
-              />
-            }
-            name="Enable Search" // Note: This has the same name as 'messages' choice. Is this intentional?
+            path={<path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />}
+            name="Enable Search"
             toggleStates={toggleStates}
             handleToggleTag={handleToggleTag}
           />

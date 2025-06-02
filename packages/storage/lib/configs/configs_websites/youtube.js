@@ -4,7 +4,7 @@ export const youtubeConfigs = {
   messageContainer: { selector: 'dnc', type: 'attribute', parents: 0 },
   otherContainers: {
     'yt-playables-toggle': [{ selector: 'YouTube Playables', type: 'text', parents: 0 }],
-    'yt-homeshorts-toggle': [{ selector: 'Suggested for you', type: 'text', parents: 3 }],
+    'yt-shorts-toggle': [{ selector: 'Suggested for you', type: 'text', parents: 3 }],
     'yt-featured-toggle': [{ selector: '[id="chips"]', type: 'attribute', parents: 0 }],
   },
   others: {
@@ -49,7 +49,7 @@ export const youtubeConfigs = {
           { selector: '[id="contents"]', type: 'attribute', parents: 0 },
         ],
         'yt-videos-toggle': { selector: '[tab-title="Videos"]', type: 'attribute', parents: 0 },
-        'yt-pagesshorts-toggle': { selector: '[tab-title="Shorts"]', type: 'attribute', parents: 0 },
+        'yt-shorts-toggle': { selector: '[tab-title="Shorts"]', type: 'attribute', parents: 0 },
         'yt-live-toggle': { selector: '[tab-title="Live"]', type: 'attribute', parents: 0 },
         'yt-playlists-toggle': { selector: '[tab-title="Playlists"]', type: 'attribute', parents: 0 },
         'yt-posts-toggle': { selector: '[tab-title="Posts"]', type: 'attribute', parents: 0 },

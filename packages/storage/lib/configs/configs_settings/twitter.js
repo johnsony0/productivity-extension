@@ -1,6 +1,7 @@
 export const twitterSettings = {
   General: [
     { id: 'x-timeout', label: 'X Timeout (seconds)', type: 'number', default: 30, min: 0, max: 300, rating: 1 },
+    { id: 'x-pages-exempt', label: 'Pages Exempt', type: 'array', default: [] },
   ],
   Navigation: [
     { id: 'x-home-toggle', label: 'Hide Home Button', type: 'checkbox', default: true, rating: 2 },
@@ -38,6 +39,5 @@ export const twitterSettings = {
     { id: 'x-articles-toggle', label: 'Hide Articles', type: 'checkbox', default: true, rating: 3 },
     { id: 'x-highlights-toggle', label: 'Hide Highlights', type: 'checkbox', default: true, rating: 3 },
     { id: 'x-media-toggle', label: 'Hide Media', type: 'checkbox', default: true, rating: 3 },
-    { id: 'x-pages-exempt', label: 'Pages Exempt', type: 'array', default: [] },
   ],
 };

@@ -9,6 +9,7 @@ export const instagramSettings = {
       max: 300,
       rating: 1,
     },
+    { id: 'ig-pages-exempt', label: 'Pages Exempt', type: 'array', default: [] },
   ],
   Navigation: [
     { id: 'ig-home-toggle', label: 'Hide Home Button', type: 'checkbox', default: true, rating: 2 },
@@ -37,6 +38,5 @@ export const instagramSettings = {
     { id: 'ig-pagesstories-toggle', label: 'Hide Stories', type: 'checkbox', default: true, rating: 3 },
     { id: 'ig-pagesreels-toggle', label: 'Hide Reels', type: 'checkbox', default: true, rating: 3 },
     { id: 'ig-pagestagged-toggle', label: 'Hide Tagged', type: 'checkbox', default: true, rating: 3 },
-    { id: 'ig-pages-exempt', label: 'Pages Exempt', type: 'array', default: [] },
   ],
 };

@@ -1,6 +1,7 @@
 export const facebookSettings = {
   General: [
     { id: 'fb-timeout', label: 'Facebook Timeout (seconds)', type: 'number', default: 30, min: 0, max: 300, rating: 1 },
+    { id: 'fb-pages-exempt', label: 'Pages Exempt', type: 'array', default: [] },
     {
       id: 'fb-messengeroverlay-toggle',
       label: 'Hide Messenger Overlay',
@@ -50,7 +51,6 @@ export const facebookSettings = {
     { id: 'fb-pageshortcuts-toggle', label: 'Hide Shortcuts', type: 'checkbox', default: true, rating: 3 },
     { id: 'fb-intro-toggle', label: 'Hide Intro', type: 'checkbox', default: true, rating: 3 },
     { id: 'fb-photos-toggle', label: 'Hide Recent Photos', type: 'checkbox', default: true, rating: 3 },
-    { id: 'fb-pages-exempt', label: 'Pages Exempt', type: 'array', default: [] },
   ],
   Groups: [
     { id: 'fb-groupsposts-toggle', label: 'Hide Posts', type: 'checkbox', default: true, rating: 3 },

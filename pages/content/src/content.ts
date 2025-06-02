@@ -86,7 +86,6 @@ const filterPost = async (
   chrome.storage.sync.get(['post_count', 'date'], result => {
     const postCount = result.post_count || 0;
     chrome.storage.sync.set({ post_count: postCount + 1 });
-    console.log(postCount);
     if (settings['limit-toggle'] && postCount >= settings['limit-value']) {
       console.warn('Post limit exceeded!');
       displayLimitReached(postContainer, settings['limit-value']);
@@ -107,7 +106,13 @@ const filterPost = async (
     }
   });
 
-  if (!dropdownCreated && messageContainer && !settings['ai']) {
+  //only run the ML if there isn't already a dropdown, we can find the message, the setting for the model is on and the website is x or facebook
+  if (
+    !dropdownCreated &&
+    messageContainer &&
+    !settings['ai'] &&
+    (window.location.hostname.includes('x.com') || window.location.hostname.includes('facebook.com'))
+  ) {
     // ML pipeline for topic classification
     const topic_prediction = await runTopicModel(text);
     const topic_data = {
@@ -277,7 +282,6 @@ const setupObserver = (platformConfig: PlatformConfig, settings: Settings) => {
       console.warn('Main container not found for this platform.');
       return;
     }
-    console.log(mainContainer);
     // Process initial posts after mainContainer is found
     const initialPosts = document.querySelectorAll(platformConfig.postContainer.selector);
     initialPosts.forEach(postContainer => processPost(platformConfig, settings, postContainer as HTMLElement));
@@ -302,17 +306,16 @@ const setupObserver = (platformConfig: PlatformConfig, settings: Settings) => {
 
 const handleURLChange = () => {
   initModel();
-  const url = window.location.hostname + window.location.pathname;
+  const url = window.location.hostname;
   const currentUrl = window.location.pathname;
   chrome.storage.sync.get(null, settings => {
-    console.log(settings);
     let temp = {};
     temp = { ...temp, ...settings['extension'] };
     temp = { ...temp, ...settings['quick-settings'] };
     temp = { ...temp, ...settings['toggleStates'] };
 
     // Hide or manage elements based on settings and URL
-    if (url.includes('facebook.com')) {
+    if (url.includes('facebook.com') && settings['extension']['facebook-toggle']) {
       temp = { ...temp, ...settings['facebook'] };
       console.log('Observing Facebook posts...', temp);
       const exemptPages = settings[facebookConfigs.others.exempt] || [];
@@ -320,7 +323,7 @@ const handleURLChange = () => {
         filterPage(facebookConfigs, temp);
         setupObserver(facebookConfigs, temp);
       }
-    } else if (url.includes('instagram.com')) {
+    } else if (url.includes('instagram.com') && settings['extension']['instagram-toggle']) {
       temp = { ...temp, ...settings['instagram'] };
       console.log('Observing Instagram posts...', temp);
       const exemptPages = settings[instaConfigs.others.exempt] || [];
@@ -328,7 +331,7 @@ const handleURLChange = () => {
         filterPage(instaConfigs, temp);
         setupObserver(instaConfigs, temp);
       }
-    } else if (url.includes('x.com')) {
+    } else if (url.includes('x.com') && settings['extension']['twitter-toggle']) {
       temp = { ...temp, ...settings['twitter'] };
       console.log('Observing Twitter posts...', temp);
       const exemptPages = settings[twitterConfigs.others.exempt] || [];
@@ -336,7 +339,7 @@ const handleURLChange = () => {
         filterPage(twitterConfigs, temp);
         setupObserver(twitterConfigs, temp);
       }
-    } else if (url.includes('youtube.com')) {
+    } else if (url.includes('youtube.com') && settings['extension']['youtube-toggle']) {
       temp = { ...temp, ...settings['youtube'] };
       console.log('Observing Youtube videos...', temp);
       const exemptPages = settings[youtubeConfigs.others.exempt] || [];
