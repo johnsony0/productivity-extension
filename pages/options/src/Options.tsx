@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PlatformSelector, CategorySection, QuickSettings } from '@extension/ui';
+import { createTimeout } from '@extension/shared';
 import {
   extensionSettings,
   facebookSettings,
@@ -15,6 +16,14 @@ export const Options: React.FC = () => {
   const [settings, setSettings] = useState<Record<string, any>>({});
   const [darkMode, setDarkMode] = useState(false);
   const [showToast, setShowToast] = useState(false);
+
+  useEffect(() => {
+    chrome.storage.sync.get(['extension'], result => {
+      if (result['extension']['ex-timeout']) {
+        createTimeout('settings', result['extension']['ex-timeout']);
+      }
+    });
+  }, []);
 
   // Helper function to flatten settings into id: value pairs
   const flattenSettings = (settings: any) => {

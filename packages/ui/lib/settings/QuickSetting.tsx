@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Button } from '@headlessui/react';
 import {
   extensionSettings,
   facebookSettings,
@@ -139,7 +140,7 @@ export const QuickSettings: React.FC<QuickSettingsProps> = ({ onSettingsChange, 
     // Fix 1: Explicitly return JSX
     // Fix 2: Use bracket notation for toggleStates[tag]
     return (
-      <button
+      <Button
         onClick={() => handleToggleTag(tag)}
         className={`relative flex items-center justify-center p-4 rounded-xl transition-all duration-200 shadow-md hover:shadow-lg ${
           toggleStates[tag] ? 'bg-secondary text-heading' : 'bg-gray-300 text-gray-800'
@@ -158,7 +159,7 @@ export const QuickSettings: React.FC<QuickSettingsProps> = ({ onSettingsChange, 
           </div>
           <span className="font-medium text-base">{name}</span>
         </div>
-      </button>
+      </Button>
     );
   };
 
