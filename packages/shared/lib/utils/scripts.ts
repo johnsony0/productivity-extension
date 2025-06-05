@@ -100,8 +100,11 @@ export function waitForElm(node: ParentNode | Document, input: FindElementInput)
   });
 }
 
-export const hideElement = (elements: FindElementInput | FindElementInput[], node?: ParentNode | Document): void => {
-  const inputs: FindElementInput[] = Array.isArray(elements) ? elements : [elements];
+export const hideElement = (
+  elementInput: FindElementInput | FindElementInput[],
+  node?: ParentNode | Document,
+): void => {
+  const inputs: FindElementInput[] = Array.isArray(elementInput) ? elementInput : [elementInput];
   inputs.forEach(input => {
     waitForElm(node || document, input).then(elm => {
       if (elm) {
@@ -111,12 +114,14 @@ export const hideElement = (elements: FindElementInput | FindElementInput[], nod
   });
 };
 
-export const hideElements = (elements: FindElementInput | FindElementInput[], node?: ParentNode | Document): void => {
-  const inputs: FindElementInput[] = Array.isArray(elements) ? elements : [elements];
-  console.log(inputs);
+export const hideElements = (
+  elementInput: FindElementInput | FindElementInput[],
+  node?: ParentNode | Document,
+): void => {
+  const inputs: FindElementInput[] = Array.isArray(elementInput) ? elementInput : [elementInput];
   inputs.forEach(input => {
-    const elements = findElements(node || document, input);
-    elements?.forEach(elm => {
+    const elms = findElements(node || document, input);
+    elms?.forEach(elm => {
       if (elm) {
         (elm as HTMLElement).style.display = 'none';
       }
@@ -124,8 +129,11 @@ export const hideElements = (elements: FindElementInput | FindElementInput[], no
   });
 };
 
-export const deleteElement = (elements: FindElementInput | FindElementInput[], node?: ParentNode | Document): void => {
-  const inputs: FindElementInput[] = Array.isArray(elements) ? elements : [elements];
+export const deleteElement = (
+  elementInput: FindElementInput | FindElementInput[],
+  node?: ParentNode | Document,
+): void => {
+  const inputs: FindElementInput[] = Array.isArray(elementInput) ? elementInput : [elementInput];
   inputs.forEach(input => {
     waitForElm(node || document, input).then(elm => {
       if (elm) {

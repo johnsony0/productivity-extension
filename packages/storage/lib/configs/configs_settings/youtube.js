@@ -26,11 +26,11 @@ export const youtubeSettings = {
     { id: 'yt-featured-toggle', label: 'Hide YouTube Featured', type: 'checkbox', default: true, rating: 3 },
   ],
   Pages: [
-    { id: 'yt-pagesposts-toggle', label: 'Hide Home', type: 'checkbox', default: false, rating: 5 },
-    { id: 'yt-videos-toggle', label: 'Hide Videos', type: 'checkbox', default: true, rating: 3 },
-    { id: 'yt-live-toggle', label: 'Hide Live', type: 'checkbox', default: true, rating: 3 },
-    { id: 'yt-playlists-toggle', label: 'Hide Playlists', type: 'checkbox', default: true, rating: 3 },
-    { id: 'yt-posts-toggle', label: 'Hide Posts', type: 'checkbox', default: true, rating: 3 },
-    { id: 'yt-store-toggle', label: 'Hide Store', type: 'checkbox', default: true, rating: 3 },
+    { id: 'yt-pagesposts-toggle', label: 'Hide Home Tab', type: 'checkbox', default: false, rating: 5 },
+    { id: 'yt-videos-toggle', label: 'Hide Videos Tab', type: 'checkbox', default: true, rating: 3 },
+    { id: 'yt-live-toggle', label: 'Hide Live Tab', type: 'checkbox', default: true, rating: 3 },
+    { id: 'yt-playlists-toggle', label: 'Hide Playlists Tab', type: 'checkbox', default: true, rating: 3 },
+    { id: 'yt-posts-toggle', label: 'Hide Posts Tab', type: 'checkbox', default: true, rating: 3 },
+    { id: 'yt-store-toggle', label: 'Hide Store Tab', type: 'checkbox', default: true, rating: 3 },
   ],
 };

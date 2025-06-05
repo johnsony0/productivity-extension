@@ -282,9 +282,11 @@ const setupObserver = (platformConfig: PlatformConfig, settings: Settings) => {
       console.warn('Main container not found for this platform.');
       return;
     }
+
     // Process initial posts after mainContainer is found
     const initialPosts = document.querySelectorAll(platformConfig.postContainer.selector);
     initialPosts.forEach(postContainer => processPost(platformConfig, settings, postContainer as HTMLElement));
+    console.log(initialPosts);
 
     // Observe for new posts
     const observer = new MutationObserver(mutations => {
@@ -293,6 +295,7 @@ const setupObserver = (platformConfig: PlatformConfig, settings: Settings) => {
           if (node instanceof Element) {
             const postContainer = findElement(node, platformConfig.postContainer);
             if (postContainer && !postContainer.dataset.processed) {
+              console.log(postContainer);
               postContainer.dataset.processed = 'true';
               processPost(platformConfig, settings, postContainer);
             }

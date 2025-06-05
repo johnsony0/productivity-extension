@@ -1,10 +1,10 @@
 export const youtubeConfigs = {
   mainContainer: { selector: 'contents', type: 'id', parents: 0 },
-  postContainer: { selector: 'thumbnail', type: 'id', parents: 1 },
+  postContainer: { selector: '[class="style-scope ytd-rich-grid-renderer"]', type: 'attribute', parents: 0 },
   messageContainer: { selector: 'dnc', type: 'attribute', parents: 0 },
   otherContainers: {
-    'yt-playables-toggle': [{ selector: 'YouTube Playables', type: 'text', parents: 0 }],
-    'yt-shorts-toggle': [{ selector: 'Suggested for you', type: 'text', parents: 3 }],
+    'yt-playables-toggle': [{ selector: 'YouTube Playables', type: 'text', parents: 10 }],
+    'yt-shorts-toggle': [{ selector: 'Shorts', type: 'text', parents: 8 }],
     'yt-featured-toggle': [{ selector: '[id="chips"]', type: 'attribute', parents: 0 }],
   },
   others: {
@@ -60,7 +60,7 @@ export const youtubeConfigs = {
     Extras: {
       url: '/watch',
       hideElement: {
-        'comments-toggle': [{ selector: '[section-identifier="comment-item-section"]', type: 'attribute', parents: 0 }],
+        'comments-toggle': [{ selector: 'comments', type: 'id', parents: 0 }],
         'reacts-toggle': [
           {
             selector: '[class="ytSegmentedLikeDislikeButtonViewModelHost style-scope ytd-menu-renderer"]',
@@ -68,12 +68,17 @@ export const youtubeConfigs = {
             parents: 0,
           },
         ],
-        'shares-toggle': { selector: '[aria-label="Share"]', type: 'attribute', parents: 0 },
+        'shares-toggle': {
+          selector:
+            '[class="yt-spec-button-shape-next yt-spec-button-shape-next--tonal yt-spec-button-shape-next--mono yt-spec-button-shape-next--size-m yt-spec-button-shape-next--icon-leading yt-spec-button-shape-next--enable-backdrop-filter-experiment"]',
+          type: 'attribute',
+          parents: 0,
+        },
         'saves-toggle': [{ selector: '[aria-label="Save to playlist"]', type: 'attribute', parents: 0 }],
-        'yt-suggestions-toggle': { selector: 'contents', type: 'id', parents: 0 },
-        'yt-description-toggle': { selector: 'description', type: 'id', parents: 0 },
+        'yt-description-toggle': { selector: 'description-inner', type: 'id', parents: 1 },
         'yt-download-toggle': { selector: '[aria-label="Download"]', type: 'attribute', parents: 0 },
-        'yt-clip-toggle': { selector: '[aria-label="Clip"]', type: 'attribute', parents: 0 },
+        'yt-clip-toggle': { selector: 'Clip', type: 'text', parents: 3 },
+        'yt-suggestions-toggle': { selector: 'chat-container', type: 'id', parents: 1 },
       },
     },
   },
