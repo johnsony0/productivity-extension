@@ -137,7 +137,7 @@ export const displayLimitReached = (adjacentElement: HTMLElement, postLimit: num
   messageContainer.style.padding = '20px';
 
   const messageText = document.createElement('p');
-  messageText.innerHTML = `You have hit your set post limit of ${postLimit}.<br>Let's focus on improving one percent today.`;
+  messageText.innerHTML = `You have hit your set post limit of ${postLimit}`;
   messageText.style.marginBottom = '50px';
   messageContainer.appendChild(messageText);
 
@@ -146,9 +146,7 @@ export const displayLimitReached = (adjacentElement: HTMLElement, postLimit: num
   quoteText.style.fontSize = '1.2rem';
   quoteText.style.textAlign = 'center';
   quoteText.style.margin = '0 20px';
-  quoteText.innerHTML = `
-    ":("
-  `;
+  quoteText.innerHTML = `  `;
   messageContainer.appendChild(quoteText);
 
   const citation = document.createElement('cite');
@@ -156,7 +154,7 @@ export const displayLimitReached = (adjacentElement: HTMLElement, postLimit: num
   citation.style.display = 'block';
   citation.style.fontSize = '1rem';
   citation.style.color = 'rgba(255, 255, 255, 0.8)';
-  citation.innerText = `- me`;
+  citation.innerText = ` `;
   messageContainer.appendChild(citation);
 
   adjacentElement.insertAdjacentElement('beforebegin', messageContainer);

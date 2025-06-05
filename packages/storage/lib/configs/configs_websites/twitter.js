@@ -52,7 +52,7 @@ export const twitterConfigs = {
       },
     },
     Pages: {
-      url: '/*',
+      url: '/',
       hideElement: {
         'x-pagesposts-toggle': [
           { selector: '[role="region"]', type: 'attribute', parents: 0 },
@@ -62,6 +62,8 @@ export const twitterConfigs = {
         'x-replies-toggle': { selector: 'Replies', type: 'text', parents: 4 },
         'x-highlights-toggle': { selector: 'Highlights', type: 'text', parents: 4 },
         'x-media-toggle': { selector: 'Media', type: 'text', parents: 4 },
+        'x-trending-toggle': { selector: '[aria-label="Timeline: Trending now"]', type: 'attribute', parents: 1 },
+        'x-recc-toggle': { selector: '[aria-label="Who to follow"]', type: 'attribute', parents: 1 },
       },
     },
     Extras: {

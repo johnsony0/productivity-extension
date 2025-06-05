@@ -1,4 +1,4 @@
-import { runBiasModel, runTopicModel, initModel } from '@extension/shared';
+import { runBiasModel, runTopicModel, initModel, checkText } from '@extension/shared';
 import { createDataBars, createTimeout, createDropdown, displayLimitReached } from '@extension/shared';
 import { waitForElm, hideElement, hideElements, deleteElement, hideVideosPhotos, findElement } from '@extension/shared';
 
@@ -110,7 +110,7 @@ const filterPost = async (
   if (
     !dropdownCreated &&
     messageContainer &&
-    !settings['ai'] &&
+    settings['enable-topic'] &&
     (window.location.hostname.includes('x.com') || window.location.hostname.includes('facebook.com'))
   ) {
     // ML pipeline for topic classification
@@ -140,29 +140,35 @@ const filterPost = async (
       createDropdown(`Biased towards ${bias} at ${topic_data[bias]}%`, postContainer);
       dropdownCreated = true;
     }
+  }
 
-    // ML pipeline for bias detection
-    if (bias == 'politics' && !dropdownCreated) {
-      const bias_prediction = await runBiasModel(text);
-      const bias_data = {
-        left: Math.round(bias_prediction[0] * 100),
-        center: Math.round(bias_prediction[2] * 100),
-        right: Math.round(bias_prediction[1] * 100),
-      };
-      const bias = Object.keys(bias_data).reduce((a, b) =>
-        bias_data[a as keyof typeof bias_data] > bias_data[b as keyof typeof bias_data] ? a : b,
-      );
-      createDataBars(bias_data, postContainer);
+  const error = checkText(text);
+  // ML pipeline for bias detection
+  if (
+    !error &&
+    !dropdownCreated &&
+    settings['enable-bias'] &&
+    (window.location.hostname.includes('x.com') || window.location.hostname.includes('facebook.com'))
+  ) {
+    const bias_prediction = await runBiasModel(text);
+    const bias_data = {
+      left: Math.round(bias_prediction[0] * 100),
+      center: Math.round(bias_prediction[2] * 100),
+      right: Math.round(bias_prediction[1] * 100),
+    };
+    const bias = Object.keys(bias_data).reduce((a, b) =>
+      bias_data[a as keyof typeof bias_data] > bias_data[b as keyof typeof bias_data] ? a : b,
+    );
+    createDataBars(bias_data, postContainer);
 
-      const biasThresholdExceeded =
-        (bias === 'left' && settings['enable-left'] && bias_data['left'] > settings['bias-threshold']) ||
-        (bias === 'right' && settings['enable-right'] && bias_data['right'] > settings['bias-threshold']) ||
-        (bias === 'center' && settings['enable-center'] && bias_data['center'] > settings['bias-threshold']);
-      if (settings['bias-filter-visibility'] === 'hide' && biasThresholdExceeded) {
-        postContainer.style.display = 'none';
-      } else if (settings['bias-filter-visibility'] === 'min' && biasThresholdExceeded) {
-        createDropdown(`Biased towards ${bias} at ${bias_data[bias]}%`, postContainer);
-      }
+    const biasThresholdExceeded =
+      (bias === 'left' && settings['enable-left'] && bias_data['left'] > settings['bias-threshold']) ||
+      (bias === 'right' && settings['enable-right'] && bias_data['right'] > settings['bias-threshold']) ||
+      (bias === 'center' && settings['enable-center'] && bias_data['center'] > settings['bias-threshold']);
+    if (settings['bias-filter-visibility'] === 'hide' && biasThresholdExceeded) {
+      postContainer.style.display = 'none';
+    } else if (settings['bias-filter-visibility'] === 'min' && biasThresholdExceeded) {
+      createDropdown(`Biased towards ${bias} at ${bias_data[bias]}%`, postContainer);
     }
   }
 };
@@ -204,7 +210,7 @@ const filterPage = (configs: PlatformConfig, settings: Settings) => {
 
     if (settings['limit-toggle'] && postCount >= settings['limit-value']) {
       console.warn('Post limit exceeded!');
-      displayLimitReached(document.body, postCount);
+      displayLimitReached(document.body, settings['limit-value']);
     }
   });
 
@@ -286,7 +292,6 @@ const setupObserver = (platformConfig: PlatformConfig, settings: Settings) => {
     // Process initial posts after mainContainer is found
     const initialPosts = document.querySelectorAll(platformConfig.postContainer.selector);
     initialPosts.forEach(postContainer => processPost(platformConfig, settings, postContainer as HTMLElement));
-    console.log(initialPosts);
 
     // Observe for new posts
     const observer = new MutationObserver(mutations => {
@@ -295,7 +300,6 @@ const setupObserver = (platformConfig: PlatformConfig, settings: Settings) => {
           if (node instanceof Element) {
             const postContainer = findElement(node, platformConfig.postContainer);
             if (postContainer && !postContainer.dataset.processed) {
-              console.log(postContainer);
               postContainer.dataset.processed = 'true';
               processPost(platformConfig, settings, postContainer);
             }

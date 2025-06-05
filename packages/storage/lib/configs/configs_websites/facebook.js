@@ -95,21 +95,9 @@ export const facebookConfigs = {
     },
     hideElement: {
       'comments-toggle': [
-        {
-          selector:
-            'x9f619 x1ja2u2z x78zum5 x2lah0s x1n2onr6 x1qughib x1qjc9v5 xozqiw3 x1q0g3np xykv574 xbmpl8g x4cne27 xifccgj',
-          type: 'class',
-          parents: 0,
-        },
+        { selector: `[aria-label="Write a comment…"]`, type: 'attribute', parents: 12 },
         { selector: `[aria-label="Leave a comment"]`, type: 'attribute', parents: 0 },
-        { selector: 'xdj266r xat24cr x1d52u69 xktsk01', type: 'class', parents: 0 },
-        {
-          selector: 'x9f619 x1n2onr6 x1ja2u2z x78zum5 xdt5ytf x2lah0s x193iq5w x1ye3gou xn6708d',
-          type: 'class',
-          parents: 0,
-        },
-        { selector: 'Comments', type: 'text', parents: 2 },
-        { selector: 'xabvvm4 xeyy32k x1ia1hqs x1a2w583 x6ikm8r x10wlt6ss2', type: 'class', parents: 0 },
+        { selector: 'View more comments', type: 'text', parents: 4 },
       ],
       'reacts-toggle': [
         { selector: '[aria-label="See who reacted to this"]', type: 'attribute', parents: 1 },
@@ -118,7 +106,7 @@ export const facebookConfigs = {
       'shares-toggle': [
         {
           selector:
-            'x9f619 x1ja2u2z x78zum5 x2lah0s x1n2onr6 x1qughib x1qjc9v5 xozqiw3 x1q0g3np xykv574 xbmpl8g x4cne27 xifccgj',
+            'x9f619 x1ja2u2z x78zum5 x2lah0s x1n2onr6 x1qughib x1qjc9v5 xozqiw3 x1q0g3np x1ws5yxj xw01apr x4cne27 xifccgj x123j3cw xs9asl8',
           type: 'class',
           parents: 0,
         },

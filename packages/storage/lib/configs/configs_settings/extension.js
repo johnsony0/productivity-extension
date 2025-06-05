@@ -46,6 +46,14 @@ export const extensionSettings = {
   ],
   Topic: [
     {
+      id: 'enable-topic',
+      label: 'Enable Topic Classification',
+      type: 'checkbox',
+      default: false,
+      tag: 'ai',
+      rating: 4,
+    },
+    {
       id: 'topic-filter-visibility',
       label: 'Topic Filter Visibility',
       type: 'select',
@@ -65,6 +73,7 @@ export const extensionSettings = {
     { id: 'topic-threshold', label: 'Threshold', type: 'number', default: 50, min: 5, max: 95 },
   ],
   Bias: [
+    { id: 'enable-bias', label: 'Enable Bias Classification', type: 'checkbox', default: true, tag: 'ai', rating: 1 },
     {
       id: 'bias-filter-visibility',
       label: 'Bias Filter Visibility',

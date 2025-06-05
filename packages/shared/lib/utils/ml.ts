@@ -4,7 +4,7 @@ import { AutoTokenizer, env } from '@xenova/transformers';
 
 env.allowLocalModels = false;
 
-type CheckTextResult = string | null;
+type CheckTextResult = number | null;
 type RunModelResult = Uint8Array<ArrayBufferLike> | any;
 type ConvertTextToVectorResult = number[] | null;
 
@@ -14,16 +14,16 @@ export const initModel = () => {
 
 export const checkText = (text: string): CheckTextResult => {
   if (text.trim().length === 0) {
-    return 'Length of text is too short';
+    return 1;
   }
   const lowerText = text.toLowerCase();
   const isPolitical = keywords.some(keyword => lowerText.includes(keyword.toLowerCase()));
 
   if (!isPolitical) {
-    return 'Post not political: skip scan';
+    return 1;
   }
 
-  return null;
+  return 0;
 };
 
 export const runTopicModel = async (text: string): Promise<RunModelResult> => {

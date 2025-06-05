@@ -60,7 +60,10 @@ export const youtubeConfigs = {
     Extras: {
       url: '/watch',
       hideElement: {
-        'comments-toggle': [{ selector: 'comments', type: 'id', parents: 0 }],
+        'comments-toggle': [
+          { selector: 'comments', type: 'id', parents: 0 },
+          { selector: 'chat-messages', type: 'id', parents: 0 },
+        ],
         'reacts-toggle': [
           {
             selector: '[class="ytSegmentedLikeDislikeButtonViewModelHost style-scope ytd-menu-renderer"]',
