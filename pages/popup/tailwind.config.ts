@@ -4,7 +4,7 @@ import { withUI } from '@extension/ui';
 export default withUI({
   ...baseConfig,
   content: ['./src/**/*.{ts,tsx}'],
-  safelist: ['text-gray-800', 'bg-gray-300', 'opacity-50'],
+  safelist: ['text-gray-800', 'bg-gray-300', 'opacity-50', 'text-blue-600'],
   theme: {
     extend: {
       colors: {

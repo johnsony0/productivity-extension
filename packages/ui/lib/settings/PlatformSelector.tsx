@@ -7,6 +7,12 @@ interface PlatformSelectorProps {
 }
 
 export const PlatformSelector: React.FC<PlatformSelectorProps> = ({ onPlatformChange, mode }) => {
+  const gotoSettings = () => {
+    if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.openOptionsPage) {
+      chrome.runtime.openOptionsPage();
+    }
+  };
+
   return (
     <div className={`${mode ? 'mb-8' : 'mb-1'}`}>
       <label htmlFor="platform" className="block text-lg font-bold">
@@ -23,6 +29,14 @@ export const PlatformSelector: React.FC<PlatformSelectorProps> = ({ onPlatformCh
         <option value="twitter">Twitter</option>
         <option value="youtube">Youtube</option>
       </Select>
+      {mode === 0 && (
+        <div className="text-sm text-gray-500 mt-2">
+          If dropdown fails click{' '}
+          <span className="cursor-pointer text-blue-600 hover:underline" onClick={gotoSettings}>
+            here
+          </span>
+        </div>
+      )}
     </div>
   );
 };

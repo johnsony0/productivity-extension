@@ -31,7 +31,10 @@ export const youtubeConfigs = {
         'yt-home-toggle': [{ selector: '[aria-label="Home"]', type: 'attribute', parents: 1 }],
         'yt-shorts-toggle': [{ selector: '[aria-label="Shorts"]', type: 'attribute', parents: 1 }],
         'yt-subscriptions-toggle': [{ selector: '[aria-label="Subscriptions"]', type: 'attribute', parents: 1 }],
-        'yt-menu-toggle': { selector: '[aria-label="Guide"]', type: 'attribute', parents: 1 },
+        'yt-menu-toggle': [
+          { selector: '[aria-label="Guide"]', type: 'attribute', parents: 1 },
+          { selector: 'sections', type: 'id', parents: 0 },
+        ],
       },
     },
     Home: {
@@ -51,10 +54,15 @@ export const youtubeConfigs = {
         'yt-videos-toggle': { selector: '[tab-title="Videos"]', type: 'attribute', parents: 0 },
         'yt-shorts-toggle': { selector: '[tab-title="Shorts"]', type: 'attribute', parents: 0 },
         'yt-live-toggle': { selector: '[tab-title="Live"]', type: 'attribute', parents: 0 },
+        'yt-podcasts-toggle': { selector: '[tab-title="Podcasts"]', type: ' attribute', parents: 0 },
         'yt-playlists-toggle': { selector: '[tab-title="Playlists"]', type: 'attribute', parents: 0 },
         'yt-posts-toggle': { selector: '[tab-title="Posts"]', type: 'attribute', parents: 0 },
         'yt-store-toggle': { selector: '[tab-title="Store"]', type: 'attribute', parents: 0 },
-        'yt-search-toggle': { selector: '[aria-label="Search"]', type: ' attribute', parents: 0 },
+        'yt-search-toggle': {
+          selector: '[class="yt-tab-shape-wiz yt-tab-shape-wiz__tab--last-tab"]',
+          type: ' attribute',
+          parents: 0,
+        },
       },
     },
     Extras: {

@@ -85,9 +85,6 @@ export const extensionSettings = {
         { value: 'hide', text: 'Hide' },
       ],
     },
-    { id: 'enable-left', label: 'Left Leaning', type: 'checkbox', default: true, tag: 'ai', rating: 1 },
-    //{id: 'enable-center',label: 'Center Leaning',type: 'checkbox', default: false, rating: 1},
-    { id: 'enable-right', label: 'Right Leaning', type: 'checkbox', default: true, tag: 'ai', rating: 1 },
     { id: 'bias-threshold', label: 'Threshold', type: 'number', default: 50, min: 5, max: 95 },
   ],
 };

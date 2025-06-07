@@ -32,5 +32,6 @@ export const youtubeSettings = {
     { id: 'yt-playlists-toggle', label: 'Hide Playlists Tab', type: 'checkbox', default: true, rating: 3 },
     { id: 'yt-posts-toggle', label: 'Hide Posts Tab', type: 'checkbox', default: true, rating: 3 },
     { id: 'yt-store-toggle', label: 'Hide Store Tab', type: 'checkbox', default: true, rating: 3 },
+    { id: 'yt-podcasts-toggle', label: 'Hide Podcasts Tab', type: 'checkbox', default: true, rating: 3 },
   ],
 };

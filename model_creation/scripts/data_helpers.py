@@ -17,7 +17,7 @@ def create_connection():
   return conn, cursor
 
 def get_topic_data():
-  engine_name = f"postgresql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('TOPIC_DB_NAME')}"
+  engine_name = f"postgresql://{os.getenv('CEB_DB_USER')}:{os.getenv('CEB_DB_PASSWORD')}@{os.getenv('CEB_DB_HOST')}:{os.getenv('CEB_DB_PORT')}/{os.getenv('CEB_TOPIC_DB_NAME')}"
   engine = create_engine(engine_name)
 
   query_sql = "SELECT * FROM topic_data"
@@ -35,7 +35,7 @@ def display_topic_data(df):
   plt.show()
 
 def get_bias_data():
-  engine_name = f"postgresql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('BIAS_DB_NAME')}"
+  engine_name = f"postgresql://{os.getenv('CEB_DB_USER')}:{os.getenv('CEB_DB_PASSWORD')}@{os.getenv('CEB_DB_HOST')}:{os.getenv('CEB_DB_PORT')}/{os.getenv('CEB_BIAS_DB_NAME')}"
   engine = create_engine(engine_name)
 
   query_sql = "SELECT * FROM fb_data"

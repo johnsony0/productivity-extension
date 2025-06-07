@@ -162,9 +162,8 @@ const filterPost = async (
     createDataBars(bias_data, postContainer);
 
     const biasThresholdExceeded =
-      (bias === 'left' && settings['enable-left'] && bias_data['left'] > settings['bias-threshold']) ||
-      (bias === 'right' && settings['enable-right'] && bias_data['right'] > settings['bias-threshold']) ||
-      (bias === 'center' && settings['enable-center'] && bias_data['center'] > settings['bias-threshold']);
+      (bias === 'left' && bias_data['left'] > settings['bias-threshold']) ||
+      (bias === 'right' && bias_data['right'] > settings['bias-threshold']);
     if (settings['bias-filter-visibility'] === 'hide' && biasThresholdExceeded) {
       postContainer.style.display = 'none';
     } else if (settings['bias-filter-visibility'] === 'min' && biasThresholdExceeded) {
