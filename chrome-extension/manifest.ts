@@ -29,7 +29,12 @@ const manifest = {
   },
   version: packageJson.version,
   description: 'Placeholder for Now',
-  host_permissions: ['<all_urls>'],
+  host_permissions: [
+    'https://*.facebook.com/*',
+    'https://*.x.com/*',
+    'https://*.instagram.com/*',
+    'https://*.youtube.com/*',
+  ],
   permissions: ['activeTab', 'scripting', 'storage'],
   options_page: 'options/index.html',
   background: {
