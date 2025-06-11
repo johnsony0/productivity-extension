@@ -17,13 +17,20 @@ export const checkText = (text: string): CheckTextResult => {
     return 1;
   }
   const lowerText = text.toLowerCase();
-  const isPolitical = keywords.some(keyword => lowerText.includes(keyword.toLowerCase()));
+  const matchedKeyword = keywords.find(keyword => {
+    const lowerKeyword = keyword.toLowerCase();
+    const escapedKeyword = lowerKeyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`\\b${escapedKeyword}\\b`, 'i');
+    return regex.test(lowerText);
+  });
 
-  if (!isPolitical) {
-    return 1;
+  console.log(matchedKeyword);
+
+  if (matchedKeyword) {
+    return 0;
   }
 
-  return 0;
+  return 1;
 };
 
 export const runTopicModel = async (text: string): Promise<RunModelResult> => {
@@ -134,10 +141,9 @@ const keywords = [
   'trade',
   'sanctions',
   'lobbying',
-  'political party',
+  'political',
   'activism',
   'protest',
-  'movement',
   'rights',
   'freedom',
   'civil rights',
@@ -176,10 +182,9 @@ const keywords = [
   'export',
   'import',
   'tariff',
-  'free trade',
-  'fair trade',
-  'monetary policy',
-  'fiscal policy',
+  'trade',
+  'monetary',
+  'fiscal',
   'regulation',
   'deregulation',
   'privatization',

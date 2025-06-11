@@ -143,6 +143,7 @@ const filterPost = async (
   }
 
   const error = checkText(text);
+  console.log(text, error);
   // ML pipeline for bias detection
   if (
     !error &&
@@ -324,7 +325,7 @@ const handleURLChange = () => {
     if (url.includes('facebook.com') && settings['extension']['facebook-toggle']) {
       temp = { ...temp, ...settings['facebook'] };
       console.log('Observing Facebook posts...', temp);
-      const exemptPages = settings[facebookConfigs.others.exempt] || [];
+      const exemptPages = settings['facebook'][facebookConfigs.others.exempt] || [];
       if (!exemptPages.includes(currentUrl)) {
         filterPage(facebookConfigs, temp);
         setupObserver(facebookConfigs, temp);
@@ -332,7 +333,7 @@ const handleURLChange = () => {
     } else if (url.includes('instagram.com') && settings['extension']['instagram-toggle']) {
       temp = { ...temp, ...settings['instagram'] };
       console.log('Observing Instagram posts...', temp);
-      const exemptPages = settings[instaConfigs.others.exempt] || [];
+      const exemptPages = settings['instagram'][instaConfigs.others.exempt] || [];
       if (!exemptPages.includes(currentUrl)) {
         filterPage(instaConfigs, temp);
         setupObserver(instaConfigs, temp);
@@ -340,7 +341,7 @@ const handleURLChange = () => {
     } else if (url.includes('x.com') && settings['extension']['twitter-toggle']) {
       temp = { ...temp, ...settings['twitter'] };
       console.log('Observing Twitter posts...', temp);
-      const exemptPages = settings[twitterConfigs.others.exempt] || [];
+      const exemptPages = settings['twitter'][twitterConfigs.others.exempt] || [];
       if (!exemptPages.includes(currentUrl)) {
         filterPage(twitterConfigs, temp);
         setupObserver(twitterConfigs, temp);
@@ -348,7 +349,7 @@ const handleURLChange = () => {
     } else if (url.includes('youtube.com') && settings['extension']['youtube-toggle']) {
       temp = { ...temp, ...settings['youtube'] };
       console.log('Observing Youtube videos...', temp);
-      const exemptPages = settings[youtubeConfigs.others.exempt] || [];
+      const exemptPages = settings['youtube'][youtubeConfigs.others.exempt] || [];
       if (!exemptPages.includes(currentUrl)) {
         filterPage(youtubeConfigs, temp);
         setupObserver(youtubeConfigs, temp);

@@ -137,7 +137,6 @@ export const deleteElement = (
   inputs.forEach(input => {
     waitForElm(node || document, input).then(elm => {
       if (elm) {
-        console.log(elm);
         elm.remove();
       }
     });

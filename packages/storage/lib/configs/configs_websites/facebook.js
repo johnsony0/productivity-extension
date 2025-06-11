@@ -1,7 +1,7 @@
 export const facebookConfigs = {
   mainContainer: { selector: '[role="main"]', type: 'attribute', parents: 0 },
   postContainer: {
-    selector: 'x1n2onr6 x1ja2u2z x1jx94hy x1qpq9i9 xdney7k xu5ydu1 xt3gfkd x9f619 xh8yej3 x6ikm8r x10wlt62 xquyuld',
+    selector: 'x1n2onr6 x1ja2u2z x1jx94hy xw5cjc7 x1dmpuos x1vsv7so xau1kf4 x9f619 xh8yej3 x6ikm8r x10wlt62 xquyuld',
     type: 'class',
     parents: 0,
   },
@@ -34,6 +34,7 @@ export const facebookConfigs = {
         'postings-toggle': [
           { selector: '[aria-label="Create a post"]', type: 'attribute', parents: 1 },
           { selector: 'Write something...', type: 'text', parents: 4 },
+          { selector: '[aria-label="New message"]', type: 'attribute', parents: 2 },
         ],
       },
     },

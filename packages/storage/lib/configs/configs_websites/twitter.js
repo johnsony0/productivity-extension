@@ -64,6 +64,7 @@ export const twitterConfigs = {
         'x-media-toggle': { selector: 'Media', type: 'text', parents: 4 },
         'x-trending-toggle': { selector: '[aria-label="Timeline: Trending now"]', type: 'attribute', parents: 1 },
         'x-recc-toggle': { selector: '[aria-label="Who to follow"]', type: 'attribute', parents: 1 },
+        'x-affiliates-toggle': { selector: 'Affiliates', type: 'text', parents: 4 },
       },
     },
     Extras: {

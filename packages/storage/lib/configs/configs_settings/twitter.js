@@ -35,9 +35,10 @@ export const twitterSettings = {
   ],
   Pages: [
     { id: 'x-pagesposts-toggle', label: 'Hide Posts', type: 'checkbox', default: false, rating: 5 },
-    { id: 'x-replies-toggle', label: 'Hide Replies', type: 'checkbox', default: true, rating: 3 },
-    { id: 'x-articles-toggle', label: 'Hide Articles', type: 'checkbox', default: true, rating: 3 },
-    { id: 'x-highlights-toggle', label: 'Hide Highlights', type: 'checkbox', default: true, rating: 3 },
-    { id: 'x-media-toggle', label: 'Hide Media', type: 'checkbox', default: true, rating: 3 },
+    { id: 'x-replies-toggle', label: 'Hide Replies Tab', type: 'checkbox', default: true, rating: 3 },
+    { id: 'x-articles-toggle', label: 'Hide Articles Tab', type: 'checkbox', default: true, rating: 3 },
+    { id: 'x-highlights-toggle', label: 'Hide Highlights Tab', type: 'checkbox', default: true, rating: 3 },
+    { id: 'x-media-toggle', label: 'Hide Media Tab', type: 'checkbox', default: true, rating: 3 },
+    { id: 'x-affiliates-toggle', label: 'Hide Affiliates Tab', type: 'checkbox', default: true, rating: 3 },
   ],
 };
