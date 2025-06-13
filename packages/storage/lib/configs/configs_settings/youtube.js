@@ -14,8 +14,8 @@ export const youtubeSettings = {
     { id: 'yt-notification-toggle', label: 'Hide Notification Button', type: 'checkbox', default: true, rating: 2 },
   ],
   Posts: [
-    { id: 'yt-suggestions-toggle', label: 'Hide Suggestions', type: 'checkbox', default: true, rating: 2 },
-    { id: 'yt-description-toggle', label: 'Hide Descriptions', type: 'checkbox', default: true, rating: 2 },
+    { id: 'yt-suggestions-toggle', label: 'Hide Suggestions', type: 'checkbox', default: true, rating: 3 },
+    { id: 'yt-description-toggle', label: 'Hide Descriptions', type: 'checkbox', default: false, rating: 4 },
     { id: 'yt-download-toggle', label: 'Hide Download Button', type: 'checkbox', default: true, rating: 2 },
     { id: 'yt-clip-toggle', label: 'Hide Clip Button', type: 'checkbox', default: true, rating: 2 },
   ],

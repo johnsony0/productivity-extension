@@ -73,8 +73,6 @@ const findElements = (node: ParentNode, input: FindElementInput): HTMLElement[] 
 
 export function waitForElm(node: ParentNode | Document, input: FindElementInput): Promise<HTMLElement | null> {
   return new Promise(resolve => {
-    let timeoutId: ReturnType<typeof setTimeout>;
-
     const elm = findElement(node, input);
     if (elm) {
       return resolve(elm);
@@ -88,7 +86,7 @@ export function waitForElm(node: ParentNode | Document, input: FindElementInput)
       }
     });
 
-    timeoutId = setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       observer.disconnect();
       resolve(null);
     }, 5000);

@@ -8,8 +8,17 @@ type CheckTextResult = number | null;
 type RunModelResult = Uint8Array<ArrayBufferLike> | any;
 type ConvertTextToVectorResult = number[] | null;
 
-export const initModel = () => {
+let biasModel: ort.InferenceSession;
+let topicModel: ort.InferenceSession;
+
+export const initModel = async () => {
   ort.env.wasm.wasmPaths = chrome.runtime.getURL('');
+
+  const BIAS_MODEL_PATH = chrome.runtime.getURL('bias_model.onnx');
+  biasModel = await ort.InferenceSession.create(BIAS_MODEL_PATH);
+
+  const TOPIC_MODEL_PATH = chrome.runtime.getURL('topic_model.onnx');
+  topicModel = await ort.InferenceSession.create(TOPIC_MODEL_PATH);
 };
 
 export const checkText = (text: string): CheckTextResult => {
@@ -34,17 +43,15 @@ export const checkText = (text: string): CheckTextResult => {
 };
 
 export const runTopicModel = async (text: string): Promise<RunModelResult> => {
-  const MODEL_PATH = chrome.runtime.getURL('topic_model.onnx');
   const vectorized_text = await convertTextToVector(text);
   if (vectorized_text === null) {
     return Array(6).fill(0);
   }
   try {
-    const session = await ort.InferenceSession.create(MODEL_PATH);
     const data = new Int32Array(vectorized_text);
     const tensor_data = new ort.Tensor('int32', data, [1, data.length]);
     const feeds = { input: tensor_data };
-    const results = await session.run(feeds);
+    const results = await topicModel.run(feeds);
     return results.output.data;
   } catch (error) {
     console.error('Error creating inference session or running the model:', error);
@@ -53,17 +60,15 @@ export const runTopicModel = async (text: string): Promise<RunModelResult> => {
 };
 
 export const runBiasModel = async (text: string): Promise<RunModelResult> => {
-  const MODEL_PATH = chrome.runtime.getURL('bias_model.onnx');
   const vectorized_text = await convertTextToVector(text);
   if (vectorized_text === null) {
     return Array(3).fill(0);
   }
   try {
-    const session = await ort.InferenceSession.create(MODEL_PATH);
     const data = new Int32Array(vectorized_text);
     const tensor_data = new ort.Tensor('int32', data, [1, data.length]);
     const feeds = { input: tensor_data };
-    const results = await session.run(feeds);
+    const results = await biasModel.run(feeds);
     return results.output.data;
   } catch (error) {
     console.error('Error creating inference session or running the model:', error);

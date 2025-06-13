@@ -1,6 +1,6 @@
 import 'webextension-polyfill';
-import { exampleThemeStorage } from '@extension/storage';
 import {
+  exampleThemeStorage,
   extensionSettings,
   facebookSettings,
   instagramSettings,

@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { PlatformSelector, CategorySection, QuickSettings } from '@extension/ui';
+import type React from 'react';
+import { useState, useEffect } from 'react';
+import { PlatformSelector, CategorySection, QuickSettings, Toast } from '@extension/ui';
 import { createTimeout } from '@extension/shared';
+import { flattenSettings } from '@extension/shared';
 import {
   extensionSettings,
   facebookSettings,
@@ -9,7 +11,6 @@ import {
   youtubeSettings,
 } from '@extension/storage';
 import { Switch, Label, Field, Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
-import { Toast } from '@extension/ui';
 
 const PopupSettings: React.FC = () => {
   const [platform, setPlatform] = useState('quick-settings');
@@ -24,17 +25,6 @@ const PopupSettings: React.FC = () => {
       }
     });
   }, []);
-
-  // Helper function to flatten settings into id: value pairs
-  const flattenSettings = (settings: any) => {
-    const flattened: Record<string, any> = {};
-    Object.keys(settings).forEach(category => {
-      settings[category].forEach((setting: any) => {
-        flattened[setting.id] = setting.default;
-      });
-    });
-    return flattened;
-  };
 
   // Load saved settings and dark mode preference on initial load
   useEffect(() => {

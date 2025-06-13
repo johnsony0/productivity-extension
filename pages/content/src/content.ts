@@ -1,11 +1,21 @@
-import { runBiasModel, runTopicModel, initModel, checkText } from '@extension/shared';
-import { createDataBars, createTimeout, createDropdown, displayLimitReached } from '@extension/shared';
-import { waitForElm, hideElement, hideElements, deleteElement, hideVideosPhotos, findElement } from '@extension/shared';
+import {
+  runBiasModel,
+  runTopicModel,
+  initModel,
+  checkText,
+  createDataBars,
+  createTimeout,
+  createDropdown,
+  displayLimitReached,
+  waitForElm,
+  hideElement,
+  hideElements,
+  deleteElement,
+  hideVideosPhotos,
+  findElement,
+} from '@extension/shared';
 
-import { facebookConfigs } from '@extension/storage';
-import { instaConfigs } from '@extension/storage';
-import { twitterConfigs } from '@extension/storage';
-import { youtubeConfigs } from '@extension/storage';
+import { facebookConfigs, instaConfigs, twitterConfigs, youtubeConfigs } from '@extension/storage';
 
 // Define types for settings and configs
 interface FindElementInput {
@@ -143,7 +153,6 @@ const filterPost = async (
   }
 
   const error = checkText(text);
-  console.log(text, error);
   // ML pipeline for bias detection
   if (
     !error &&
@@ -312,7 +321,6 @@ const setupObserver = (platformConfig: PlatformConfig, settings: Settings) => {
 };
 
 const handleURLChange = () => {
-  initModel();
   const url = window.location.hostname;
   const currentUrl = window.location.pathname;
   chrome.storage.sync.get(null, settings => {
@@ -320,6 +328,8 @@ const handleURLChange = () => {
     temp = { ...temp, ...settings['extension'] };
     temp = { ...temp, ...settings['quick-settings'] };
     temp = { ...temp, ...settings['toggleStates'] };
+
+    initModel();
 
     // Hide or manage elements based on settings and URL
     if (url.includes('facebook.com') && settings['extension']['facebook-toggle']) {

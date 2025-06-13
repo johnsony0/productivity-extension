@@ -102,7 +102,7 @@ Slight modifications to structure are reflected below.
 
 
 - ml/ai models - [chrome-extension/public](chrome-extension/public) 
-- ml/ai code - [model_creation](model_creatin)
+- ml/ai code - [model_creation](model_creation)
 - content.js helpers - [shared](packages/shared)
 - setting configurations - [storage](packages/storage)
 
@@ -133,7 +133,7 @@ Consequently, as we have no databases and everything including our ML/AI models 
 
 ### Computing Costs
 
-Noticeably, the downsides of localizing our models is that the ML/AI models will take up your computing resources (such as CPU time and memory). As such we aim to minimize the models through techniques like pruning and quanitization so it consumes as little as your resources as possible. If you struggle with running our models or wish to not use it, you can disable all our models in settings.
+Noticeably, the downsides of localizing our models is that the ML/AI models will take up your computing resources (such as CPU time and memory). As such we will aim to minimize the models through techniques like pruning and quanitization so it consumes as little as your resources as possible. If you struggle with running our models or wish to not use it, you can disable all our models in settings.
 
 ---
 
